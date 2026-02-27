@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TA Pipeline — Hublo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:     #ffffff;
+    --bg2:    #f8fafc;
+    --bg3:    #f1f5f9;
+    --border: #e2e8f0;
+    --text:   #0f172a;
+    --muted:  #64748b;
+    --dim:    #cbd5e1;
+
+    --pierre: #3b82f6;
+    --max:    #10b981;
+    --etienne:#f97316;
+    --clement:#a855f7;
+    --gabri:  #ec4899;
+
+    --ok:     #22c55e;
+    --warn:   #f59e0b;
+    --bad:    #ef4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px 14px;
+    border-bottom: 1px solid var(--border);
+    background: #f8fafc;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    
+    color: #0f172a;
+  }
+  .logo-pulse {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--pierre);
+    box-shadow: 0 0 0 0 rgba(59,130,246,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(59,130,246,0.5); }
+    70%  { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+    100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+  }
+  .logo span { color: var(--muted); font-weight: 400; font-size: 15px; }
+
+  .kpis { display: flex; gap: 28px; }
+  .kpi  { text-align: center; }
+  .kpi-val { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800; line-height: 1; }
+  .kpi-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase;  margin-top: 3px; }
+
+  .sync { font-size: 10px; color: #94a3b8; letter-spacing: 0.05em; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    padding: 0 28px;
+    border-bottom: 1px solid var(--border);
+    background: #f8fafc;
+    gap: 2px;
+  }
+  .tab {
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted); padding: 12px 16px;
+    font-size: 12px; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab.active { color: var(--text); border-bottom-color: var(--pierre); }
+  .tab:hover:not(.active) { color: #94a3b8; }
+
+  /* ── CONTENT ── */
+  .content { padding: 24px 28px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── RECRUITER CARDS ── */
+  .rec-grid { display: flex; flex-direction: column; gap: 10px; }
+
+  .rec-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .rec-card.surcharge { border-color: #fca5a5; }
+  .rec-card.tension   { border-color: #fde68a; }
+
+  .rec-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .rec-head:hover { filter: brightness(1.06); }
+
+  .rec-left { display: flex; align-items: center; gap: 13px; }
+
+  .avatar {
+    width: 40px; height: 40px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 17px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+  }
+
+  .rec-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; color: #0f172a; }
+  .rec-sub  { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .rec-sub .ao { color: #60a5fa; }
+
+  .rec-right { display: flex; align-items: center; gap: 16px; }
+
+  /* gauge */
+  .gauge-wrap { display: flex; flex-direction: column; gap: 5px; align-items: flex-end; }
+  .gauge-bar {
+    width: 120px; height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    position: relative;
+    overflow: visible;
+  }
+  .gauge-fill {
+    height: 100%; border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+  .gauge-fill::after {
+    content: '';
+    position: absolute; right: -1px; top: -3px;
+    width: 3px; height: 12px;
+    background: inherit;
+    border-radius: 2px;
+    opacity: 0.5;
+  }
+  .gauge-mark8  { position: absolute; top: -3px; left: 80%;  width: 1px; height: 12px; background: #94a3b8; }
+  .gauge-mark10 { position: absolute; top: -3px; left: 100%; width: 1px; height: 12px; background: #ef4444; transform: translateX(-1px); }
+
+  .pts-display {
+    display: flex; align-items: baseline; gap: 3px;
+    font-family: 'Inter', sans-serif;
+  }
+  .pts-num { font-size: 26px; font-weight: 800; line-height: 1; }
+  .pts-den { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .pts-label { font-size: 11px; font-weight: 600; }
+
+  .chevron { font-size: 10px; color: var(--muted); margin-left: 4px; transition: transform 0.2s; }
+  .rec-card.open .chevron { transform: rotate(180deg); }
+
+  /* ── TABLE ── */
+  .role-table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px;
+  }
+  th {
+    padding: 7px 12px;
+    text-align: left;
+    font-size: 9px; color: var(--muted);
+    font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    background: #f1f5f9;
+    white-space: nowrap;
+  }
+  tr.even { background: #ffffff; }
+  tr.odd  { background: #f8fafc; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+
+  .td-role { font-weight: 500; color: #cbd5e1; max-width: 200px; }
+  .td-comment { color: var(--muted); font-size: 11px; max-width: 240px; }
+  .td-center { text-align: center; }
+
+  .pip-badge {
+    font-size: 11px; font-weight: 500;
+    white-space: nowrap;
+  }
+  .check-yes { color: var(--ok); font-weight: 700; }
+  .check-no  { color: #94a3b8; }
+
+  tfoot tr { background: #f8fafc; border-top: 1px solid #1e293b; }
+  tfoot td { padding: 7px 12px; }
+  .tfoot-label { font-size: 9px; color: var(--muted); font-weight: 800; text-transform: uppercase;  }
+
+  /* ── CHARGE GRID ── */
+  .charge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .charge-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    animation: fadeUp 0.4s ease both;
+  }
+  .charge-card.surcharge { border-color: #fca5a5; }
+  .charge-card.tension   { border-color: #fde68a; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .charge-top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .charge-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; }
+  .charge-badge {
+    margin-left: auto;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px;
+  }
+
+  .charge-bar-wrap {
+    height: 8px; background: #e2e8f0;
+    border-radius: 4px; position: relative;
+    margin-bottom: 12px; overflow: visible;
+  }
+  .charge-bar-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .charge-bar-wrap .m8  { position: absolute; top: -4px; left: 80%;  width: 1px; height: 16px; background: #94a3b8; }
+  .charge-bar-wrap .m10 { position: absolute; top: -4px; left: 100%; width: 1px; height: 16px; background: #ef4444; transform: translateX(-1px); }
+
+  .charge-nums { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+  .charge-big  { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; line-height: 1; }
+  .charge-den  { font-size: 14px; color: var(--muted); }
+  .charge-status { font-size: 11px; font-weight: 600; }
+  .charge-meta   { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+  .charge-ao     { color: #60a5fa; margin-left: 6px; }
+
+  .role-mini { display: flex; flex-direction: column; gap: 3px; }
+  .role-mini-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 3px 0; border-bottom: 1px solid #f1f5f9;
+  }
+  .role-mini-name { font-size: 11px; color: #475569; flex: 1; padding-right: 8px; }
+  .role-mini-pt   { font-size: 11px; font-weight: 700; white-space: nowrap; }
+
+  /* ── ALERTS ── */
+  .alerts { display: flex; flex-direction: column; gap: 10px; }
+
+  .alert-card {
+    border-radius: 9px; padding: 16px 18px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .alert-card.red    { background: #fef2f2; border: 1px solid #fca5a5; }
+  .alert-card.orange { background: #fffbeb; border: 1px solid #fcd34d; }
+  .alert-card.blue   { background: #eff6ff; border: 1px solid #93c5fd; }
+  .alert-card.green  { background: #f0fdf4; border: 1px solid #86efac; }
+
+  .alert-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .alert-title { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; }
+  .alert-pts { margin-left: auto; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; }
+  .alert-body { font-size: 12px; color: #6b7280; line-height: 1.6; }
+  .alert-roles { margin-top: 8px; display: flex; flex-direction: column; gap: 3px; }
+  .alert-role-row { display: flex; justify-content: space-between; font-size: 11px; color: #6b7280; padding: 3px 0; border-bottom: 1px solid #e2e8f0; }
+
+  /* ── FORECAST ── */
+  .forecast-info {
+    background: #eff6ff; border: 1px solid #93c5fd;
+    border-radius: 7px; padding: 10px 16px;
+    font-size: 12px; color: #60a5fa; margin-bottom: 16px;
+  }
+
+  /* ── UTILS ── */
+  .empty { padding: 18px; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-pulse"></div>
+    TA PIPELINE <span>· Hublo</span>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="sync" id="sync-time"></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('pipeline',this)">📊 Pipeline</button>
+  <button class="tab" onclick="showTab('charge',this)">⚖️ Charge</button>
+  <button class="tab" onclick="showTab('forecast',this)">🎯 Forecast</button>
+  <button class="tab" onclick="showTab('alerts',this)">🔴 Alertes</button>
+</div>
+
+<div class="content">
+  <div class="panel active" id="panel-pipeline"></div>
+  <div class="panel" id="panel-charge"></div>
+  <div class="panel" id="panel-forecast"></div>
+  <div class="panel" id="panel-alerts"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DONNÉES — Notion sync 27/02/2026
+// Source : 🎯 Jobs actifs — Charge & Pondération TA
+// ═══════════════════════════════════════════════
+const DATA = [
+  // PIERRE
+  { r:"Chief People Officer",        rec:"Pierre",  pts:3,   st:"Live",     pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Medium",                     open:"23/02" },
+  { r:"Head of Revenue Operations",  rec:"Pierre",  pts:3,   st:"Live",     pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: High",                       open:"27/02" },
+  { r:"Legal Manager & DPO",         rec:"Pierre",  pts:1.5, st:"Live",     pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: High — piloté HM",           open:"19/01" },
+  { r:"Head of Data",                rec:"Pierre",  pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Medium",                     open:null   },
+  { r:"Head of Product",             rec:"Pierre",  pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Medium",                     open:null   },
+  // MAX
+  { r:"Lead SRE",                             rec:"Max", pts:3,   st:"Live", pip:"🔄", ca:null, mi:13, ps:26,  sl:false, comment:"150 approches · 30% réponse · 4 skills · 2 culture add", open:"01/09/25" },
+  { r:"Engineer (Front) Senior",              rec:"Max", pts:3,   st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Very low — cab lancement interne",           open:"12/01" },
+  { r:"Engineer (Fullstack-Back) Senior",     rec:"Max", pts:2,   st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: High",                                        open:"01/12/25" },
+  { r:"SRE Confirmed",                        rec:"Max", pts:2,   st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:null,                                                      open:null },
+  { r:"AM SMB",                               rec:"Max", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:null,                                                      open:"03/02" },
+  { r:"User Care (x3 CDI + 1 CDD)",           rec:"Max", pts:1,   st:"Live", pip:"✅", ca:null, mi:3,  ps:null, sl:true,  comment:"Offres : Diana CDI · Lucile CDI · Émilie CDD",            open:"05/01" },
+  // ETIENNE
+  { r:"Confirmed Fullstack Back Dev",              rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:8,   mi:10, ps:8,   sl:false, comment:"Pipeline bon · 1 skills test · process trop long",      open:"15/10/25" },
+  { r:"Data Engineer",                             rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very high — feedback HM trop lent",         open:"16/12/25" },
+  { r:"Eng (Fullstack-Front) Senior",              rec:"Etienne", pts:2,   st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High",                                      open:"11/02" },
+  { r:"Eng (Fullstack-Front) Confirmed",           rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium",                                    open:"11/11/25" },
+  { r:"Eng (Fullstack-Back) Confirmed ×2",         rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"2 rôles — Confidence: High",                            open:"11/02" },
+  // CLÉMENT
+  { r:"SDR Manager",        rec:"Clément", pts:3,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very low — positionnement flou", open:"08/10/25" },
+  { r:"GHT Manager",        rec:"Clément", pts:2,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very low",                       open:"26/05/25" },
+  { r:"AM Senior",          rec:"Clément", pts:1.5, st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:"31/01" },
+  { r:"SDR",                rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium",                         open:"24/02" },
+  { r:"SDR Grands Comptes", rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
+  { r:"SDR SMB Junior",     rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
+  { r:"Revops Growth Mgr",  rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very high",                      open:null    },
+  { r:"AM Manager",         rec:"Clément", pts:2,   st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
+  { r:"Manager AM GC",      rec:"Clément", pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
+  { r:"Manager AE GC",      rec:"Clément", pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
+  { r:"Enablement Manager", rec:"Clément", pts:1.5, st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
+  // GABRIELLE
+  { r:"Talent Acquisition Specialist", rec:"Gabrielle", pts:2, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:"12/11/25" },
+  // AGENCE
+  { r:"Head of Public Hospitals", rec:"Agence", pts:3, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:"05/09/25" },
+];
+
+const RECS = ["Pierre","Max","Etienne","Clément","Gabrielle"];
+
+const STYLE = {
+  Pierre:    { bg:"#eff6ff", ac:"#3b82f6", hex:"#3b82f6" },
+  Max:       { bg:"#f0fdf4", ac:"#10b981", hex:"#10b981" },
+  Etienne:   { bg:"#fff7ed", ac:"#f97316", hex:"#f97316" },
+  "Clément": { bg:"#faf5ff", ac:"#a855f7", hex:"#a855f7" },
+  Gabrielle: { bg:"#fdf2f8", ac:"#ec4899", hex:"#ec4899" },
+};
+
+const PIP = {
+  "✅": { label:"✅ Sécurisé 2 sem.", color:"#22c55e" },
+  "⚠️": { label:"⚠️ À risque",        color:"#ef4444" },
+  "🔄": { label:"🔄 En construction", color:"#f59e0b" },
+};
+
+function live(rec)   { return DATA.filter(d=>d.rec===rec&&d.st==="Live"); }
+function pts(rec)    { return live(rec).reduce((s,d)=>s+d.pts,0); }
+function toOpen(rec) { return DATA.filter(d=>d.rec===rec&&d.st==="À ouvrir"); }
+function ptColor(p, rec)  { const max = rec==="Pierre"?8:10; const warn = rec==="Pierre"?6:8; return p<=warn?"#22c55e":p<=max?"#f59e0b":"#ef4444"; }
+function ptLabel(p, rec)  { const max = rec==="Pierre"?8:10; const warn = rec==="Pierre"?6:8; return p<=warn?"Confortable":p<=max?"Tension":"Surcharge ⚠"; }
+function pct(p, rec)  { const max = rec==="Pierre"?8:10; return Math.min(p/max*100,100); }
+
+// ── KPIs ──
+function renderKPIs() {
+  const liveCount = DATA.filter(d=>d.st==="Live").length;
+  const totalPts  = RECS.reduce((s,r)=>s+pts(r),0);
+  const closing   = DATA.filter(d=>d.st==="Live"&&(d.sl||d.mi>=2)).length;
+  const surcharge = RECS.filter(r=>pts(r)>(r==="Pierre"?8:10)).length;
+  document.getElementById("kpis").innerHTML = [
+    {l:"Live",       v:liveCount,  c:"#3b82f6"},
+    {l:"Pts équipe", v:totalPts,   c:"#f59e0b"},
+    {l:"Closing",    v:closing,    c:"#22c55e"},
+    {l:"⚠ Surcharge",v:surcharge,  c:"#ef4444"},
+  ].map(({l,v,c})=>`
+    <div class="kpi">
+      <div class="kpi-val" style="color:${c}">${v}</div>
+      <div class="kpi-lbl">${l}</div>
+    </div>`).join("");
+  const now = new Date();
+  document.getElementById("sync-time").textContent =
+    `Notion sync · ${now.toLocaleDateString("fr-FR")} ${now.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}`;
+}
+
+// ── PIPELINE ──
+function renderPipeline() {
+  const el = document.getElementById("panel-pipeline");
+  el.innerHTML = `<div class="rec-grid">${RECS.map(rec => {
+    const roles = live(rec);
+    const p     = pts(rec);
+    const ao    = toOpen(rec);
+    const s     = STYLE[rec];
+    const cls   = p>10?"surcharge":p>8?"tension":"";
+
+    const rows = roles.map((d,i)=>`
+      <tr class="${i%2===0?"even":"odd"}">
+        <td class="td-role">${d.r}</td>
+        <td style="font-weight:700;color:${ptColor(d.pts)}">${d.pts}</td>
+        <td class="pip-badge" style="color:${d.pip?PIP[d.pip]?.color:"#2d3d55"}">${d.pip?PIP[d.pip]?.label:"—"}</td>
+        <td class="td-center" style="color:${d.ps>0?"#94a3b8":"#2d3d55"}">${d.ps??"—"}</td>
+        <td class="td-center" style="font-weight:${d.mi>0?700:400};color:${d.mi>0?"#f1f5f9":"#2d3d55"}">${d.mi}</td>
+        <td class="td-center">${d.sl?'<span class="check-yes">✓</span>':'<span class="check-no">—</span>'}</td>
+        <td style="color:#64748b;font-size:11px">${d.open||"—"}</td>
+        <td class="td-comment">${d.comment||"—"}</td>
+      </tr>`).join("");
+
+    const aoTag = ao.length>0
+      ? `<span class="ao">+${ao.length} à ouvrir</span>`:"";
+
+    return `
+    <div class="rec-card ${cls}" id="card-${rec}">
+      <div class="rec-head" style="background:${s.bg}" onclick="toggleCard('${rec}')">
+        <div class="rec-left">
+          <div class="avatar" style="background:${s.ac}">${rec[0]}</div>
+          <div>
+            <div class="rec-name">${rec}</div>
+            <div class="rec-sub">${roles.length} Live ${aoTag}</div>
+          </div>
+        </div>
+        <div class="rec-right">
+          <div class="gauge-wrap">
+            <div class="gauge-bar">
+              <div class="gauge-fill" style="width:${pct(p,rec)}%;background:${ptColor(p,rec)}"></div>
+              <div class="gauge-mark8"></div>
+              <div class="gauge-mark10"></div>
+            </div>
+          </div>
+          <div class="pts-display">
+            <span class="pts-num" style="color:${ptColor(p,rec)}">${p}</span>
+            <span class="pts-den">/${rec==="Pierre"?"8":"10"}</span>
+          </div>
+          <div class="pts-label" style="color:${ptColor(p,rec)};min-width:110px;text-align:right">${ptLabel(p,rec)}</div>
+          <div class="chevron">▼</div>
+        </div>
+      </div>
+      <div class="role-table-wrap" id="table-${rec}" style="display:none">
+        ${roles.length===0?`<div class="empty">Aucun rôle actif</div>`:`
+        <table>
+          <thead><tr>
+            <th>Rôle</th><th>Pts</th><th>Pipeline</th><th>PS</th>
+            <th>MI</th><th>SL</th><th>Ouv.</th><th>Commentaire</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+          <tfoot><tr>
+            <td class="tfoot-label">TOTAL</td>
+            <td style="font-weight:800;color:${ptColor(p,rec)};padding:7px 12px">${p}</td>
+            <td colspan="6" style="padding:7px 12px;color:#64748b;font-size:11px">
+              ${rec==="Pierre"?(p<=6?"🟢 Confortable":p<=8?"🟠 Tension — surveiller":"🔴 Surcharge — max Pierre atteint"):(p<=8?"🟢 Confortable":p<=10?"🟠 Tension — surveiller":"🔴 Surcharge — arbitrage requis")}
+              ${ao.length>0?`<span style="color:#3b82f6;margin-left:10px">+${ao.reduce((s,d)=>s+d.pts,0)}pts à ouvrir (${ao.length} rôles)</span>`:""}
+            </td>
+          </tr></tfoot>
+        </table>`}
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+// ── CHARGE ──
+function renderCharge() {
+  document.getElementById("panel-charge").innerHTML = `
+  <div class="charge-grid">${RECS.map((rec,i) => {
+    const roles = live(rec);
+    const p     = pts(rec);
+    const ao    = toOpen(rec);
+    const s     = STYLE[rec];
+    const cls   = p>10?"surcharge":p>8?"tension":"";
+    const delay = i*0.07;
+
+    return `
+    <div class="charge-card ${cls}" style="animation-delay:${delay}s">
+      <div class="charge-top">
+        <div class="avatar" style="background:${s.ac};width:32px;height:32px;font-size:14px">${rec[0]}</div>
+        <div class="charge-name">${rec}</div>
+        ${p>10?`<div class="charge-badge" style="background:#fee2e2;color:#ef4444">SURCHARGE</div>`:
+          p>8 ?`<div class="charge-badge" style="background:#fef3c7;color:#d97706">TENSION</div>`:`<div class="charge-badge" style="background:#dcfce7;color:#16a34a">OK</div>`}
+      </div>
+      <div class="charge-bar-wrap">
+        <div class="charge-bar-fill" style="width:${pct(p,rec)}%;background:${ptColor(p,rec)}"></div>
+        <div class="m8"></div>
+        <div class="m10"></div>
+      </div>
+      <div class="charge-nums">
+        <span class="charge-big" style="color:${ptColor(p,rec)}">${p}</span>
+        <span class="charge-den">/${rec==="Pierre"?"8":"10"}</span>
+        <span class="charge-status" style="color:${ptColor(p,rec)}">${ptLabel(p,rec)}</span>
+      </div>
+      <div class="charge-meta">
+        ${roles.length} rôles live
+        ${ao.length>0?`<span class="charge-ao">+${ao.reduce((s,d)=>s+d.pts,0)}pts à ouvrir (${ao.length})</span>`:""}
+      </div>
+      <div class="role-mini">
+        ${roles.map(d=>`
+        <div class="role-mini-row">
+          <span class="role-mini-name">${d.r}</span>
+          <span class="role-mini-pt" style="color:${ptColor(d.pts)}">${d.pts}pt</span>
+        </div>`).join("")}
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+
+// ── FORECAST ──
+function renderForecast() {
+  const closing = DATA.filter(d=>d.st==="Live"&&(d.sl||d.mi>=2));
+  const rows = closing.map((d,i)=>{
+    const s = STYLE[d.rec]||STYLE.Pierre;
+    return `<tr class="${i%2===0?"even":"odd"}">
+      <td class="td-role">${d.r}</td>
+      <td><span style="background:${s.bg};color:${s.ac};padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px">${d.rec}</span></td>
+      <td class="td-center">${d.ps??"—"}</td>
+      <td class="td-center" style="font-weight:700;color:${d.mi>0?"#f1f5f9":"#475569"}">${d.mi}</td>
+      <td class="td-center">${d.sl?'<span class="check-yes">✓</span>':"—"}</td>
+      <td class="pip-badge" style="color:${d.pip?PIP[d.pip]?.color:"#2d3d55"}">${d.pip?PIP[d.pip]?.label:"—"}</td>
+      <td class="td-comment">${d.comment||"—"}</td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("panel-forecast").innerHTML = `
+    <div class="forecast-info">
+      🎯 Rôles avec shortlist produite ou ≥ 2 candidats en Manager Interview — proches d'une offre
+    </div>
+    ${closing.length===0
+      ? `<div class="empty" style="text-align:center;padding:40px">Aucun rôle en closing identifié</div>`
+      : `<div style="overflow-x:auto"><table>
+          <thead><tr>
+            <th>Rôle</th><th>Recruteur</th><th>PS</th><th>MI</th>
+            <th>Shortlist</th><th>Pipeline</th><th>Commentaire</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table></div>`}`;
+}
+
+// ── ALERTS ──
+function renderAlerts() {
+  let html = `<div class="alerts">`;
+
+  // Surcharges
+  RECS.filter(r=>pts(r)>(r==="Pierre"?8:10)).forEach(rec=>{
+    const p = pts(rec);
+    const ao = toOpen(rec);
+    const roles = live(rec);
+    html += `<div class="alert-card red" style="animation-delay:0s">
+      <div class="alert-head">
+        <span style="font-size:18px">🔴</span>
+        <span class="alert-title" style="color:#fca5a5">Surcharge — ${rec}</span>
+        <span class="alert-pts" style="color:#ef4444">${p}pts<span style="font-size:12px;color:#64748b">/10</span></span>
+      </div>
+      <div class="alert-body">
+        ${p-10}pts au-dessus du seuil · ${roles.length} rôles actifs
+        ${ao.length>0?`· ${ao.length} rôles en attente d'ouverture bloqués`:""}
+        <div class="alert-roles">
+          ${roles.map(d=>`<div class="alert-role-row"><span>${d.r}</span><span style="color:${ptColor(d.pts)}">${d.pts}pt</span></div>`).join("")}
+        </div>
+        <div style="margin-top:10px;color:#ef4444;font-size:11px">→ Action : redistribuer vers Gabrielle (8pts disponibles)</div>
+      </div>
+    </div>`;
+  });
+
+  // Tensions
+  RECS.filter(r=>{ const max=r==="Pierre"?8:10; const warn=r==="Pierre"?6:8; return pts(r)>warn&&pts(r)<=max; }).forEach(rec=>{
+    const p = pts(rec);
+    html += `<div class="alert-card orange" style="animation-delay:0.05s">
+      <div class="alert-head">
+        <span style="font-size:18px">🟠</span>
+        <span class="alert-title" style="color:#fcd34d">Tension — ${rec}</span>
+        <span class="alert-pts" style="color:#f59e0b">${p}pts<span style="font-size:12px;color:#64748b">/10</span></span>
+      </div>
+      <div class="alert-body">Proche du seuil max · ${live(rec).length} rôles actifs · surveiller avant ouverture de nouveaux rôles</div>
+    </div>`;
+  });
+
+  // Alerte rôles Pierre (max 3 rôles)
+  const pierreRoles = live("Pierre");
+  if (pierreRoles.length >= 3) {
+    html += `<div class="alert-card ${pierreRoles.length > 3 ? "red" : "orange"}" style="animation-delay:0.02s">
+      <div class="alert-head">
+        <span style="font-size:18px">${pierreRoles.length > 3 ? "🔴" : "🟠"}</span>
+        <span class="alert-title" style="color:${pierreRoles.length > 3 ? "#fca5a5" : "#fcd34d"}">Pierre — Head of TA · ${pierreRoles.length}/3 rôles · ${pts("Pierre")}/8pts</span>
+      </div>
+      <div class="alert-body">
+        ${pierreRoles.length > 3 ? "Limite de 3 rôles dépassée" : "Capacité max atteinte (3 rôles / 8pts)"} — pas de nouveau rôle sans closing préalable
+      </div>
+    </div>`;
+  }
+
+  // Capacité dispo Gabrielle
+  if (pts("Gabrielle") <= 4) {
+    const dispo = 10 - pts("Gabrielle");
+    html += `<div class="alert-card blue" style="animation-delay:0.1s">
+      <div class="alert-head">
+        <span style="font-size:18px">💡</span>
+        <span class="alert-title" style="color:#93c5fd">Capacité disponible — Gabrielle</span>
+        <span class="alert-pts" style="color:#3b82f6">${pts("Gabrielle")}pts</span>
+      </div>
+      <div class="alert-body">${dispo}pts disponibles sur 10 · 1 rôle actif<br>→ Candidat idéal pour reprise de charge depuis Max ou Clément</div>
+    </div>`;
+  }
+
+  // Rôles anciens sans pipeline sécurisé
+  const old = DATA.filter(d=>{
+    if(d.st!=="Live"||!d.open) return false;
+    const [day,mon,...rest] = d.open.split("/");
+    const yr = rest.length>0?parseInt("20"+rest[0]):2026;
+    const dt = new Date(yr, parseInt(mon)-1, parseInt(day));
+    return (new Date()-dt)/(1000*60*60*24*7)>6 && d.pip!=="✅";
+  });
+
+  if (old.length>0) {
+    html += `<div class="alert-card orange" style="animation-delay:0.15s">
+      <div class="alert-head">
+        <span style="font-size:18px">⏳</span>
+        <span class="alert-title" style="color:#fcd34d">Rôles Live depuis &gt;6 semaines sans pipeline sécurisé (${old.length})</span>
+      </div>
+      <div class="alert-roles">
+        ${old.map(d=>`<div class="alert-role-row">
+          <span>${d.r}</span>
+          <span style="color:${STYLE[d.rec]?.ac||"#94a3b8"}">${d.rec}</span>
+          <span>ouvert le ${d.open}</span>
+        </div>`).join("")}
+      </div>
+    </div>`;
+  }
+
+  html += `</div>`;
+  document.getElementById("panel-alerts").innerHTML = html;
+}
+
+// ── INTERACTIONS ──
+function toggleCard(rec) {
+  const card  = document.getElementById(`card-${rec}`);
+  const table = document.getElementById(`table-${rec}`);
+  const isOpen = card.classList.contains("open");
+  card.classList.toggle("open", !isOpen);
+  table.style.display = isOpen ? "none" : "block";
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById(`panel-${id}`).classList.add("active");
+  btn.classList.add("active");
+}
+
+// ── INIT — Live depuis Notion API ──
+async function loadFromNotion() {
+  // Afficher loader
+  document.getElementById('panel-pipeline').innerHTML = `
+    <div style="text-align:center;padding:60px;color:#94a3b8;font-size:14px">
+      <div style="font-size:28px;margin-bottom:12px">⏳</div>
+      Chargement des données Notion...
+    </div>`;
+
+  try {
+    const res  = await fetch('/api/notion');
+    const json = await res.json();
+
+    if (!Array.isArray(json)) throw new Error(json.error || 'API error');
+
+    // Remplacer DATA global
+    DATA.length = 0;
+    json.forEach(r => DATA.push(r));
+
+    // Mapper les emojis pipeline vers codes courts
+    DATA.forEach(d => {
+      if (d.pip === '✅ Sécurisé 2 sem.') d.pip = '✅';
+      else if (d.pip === '⚠️ À risque')    d.pip = '⚠️';
+      else if (d.pip === '🔄 En construction') d.pip = '🔄';
+    });
+
+  } catch(e) {
+    console.warn('Notion API indisponible, utilisation des données en cache', e);
+  }
+
+  // Render
+  renderKPIs();
+  renderPipeline();
+  renderCharge();
+  renderForecast();
+  renderAlerts();
+
+  // Animate gauges
+  requestAnimationFrame(()=>{
+    document.querySelectorAll(".gauge-fill, .charge-bar-fill").forEach(el=>{
+      const w = el.style.width;
+      el.style.width = "0";
+      setTimeout(()=>{ el.style.width = w; }, 100);
+    });
+  });
+
+  // Refresh toutes les 5 minutes
+  setTimeout(loadFromNotion, 5 * 60 * 1000);
+}
+
+loadFromNotion();
+</script>
+</body>
+</html>
