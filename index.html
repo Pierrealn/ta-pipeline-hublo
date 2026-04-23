@@ -336,51 +336,50 @@
 // Source : 🎯 Jobs actifs — Charge & Pondération TA
 // ═══════════════════════════════════════════════
 const DATA = [
-  // PIERRE
-  { r:"Chief People Officer",        rec:"Pierre",  pts:3,   st:"Live",     pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Medium",                     open:"23/02" },
-  { r:"Head of Revenue Operations",  rec:"Pierre",  pts:3,   st:"Live",     pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: High",                       open:"27/02" },
-  { r:"Legal Manager & DPO",         rec:"Pierre",  pts:1.5, st:"Live",     pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: High — piloté HM",           open:"19/01" },
-  { r:"Head of Data",                rec:"Pierre",  pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Medium",                     open:null   },
-  { r:"Head of Product",             rec:"Pierre",  pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Medium",                     open:null   },
-  // MAX
-  { r:"Lead SRE",                             rec:"Max", pts:3,   st:"Live", pip:"🔄", ca:null, mi:13, ps:26,  sl:false, comment:"150 approches · 30% réponse · 4 skills · 2 culture add", open:"01/09/25" },
-  { r:"Engineer (Front) Senior",              rec:"Max", pts:3,   st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: Very low — cab lancement interne",           open:"12/01" },
-  { r:"Engineer (Fullstack-Back) Senior",     rec:"Max", pts:2,   st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:"Confidence: High",                                        open:"01/12/25" },
-  { r:"SRE Confirmed",                        rec:"Max", pts:2,   st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:null,                                                      open:null },
-  { r:"AM SMB",                               rec:"Max", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0,  ps:null, sl:false, comment:null,                                                      open:"03/02" },
-  { r:"User Care (x3 CDI + 1 CDD)",           rec:"Max", pts:1,   st:"Live", pip:"✅", ca:null, mi:3,  ps:null, sl:true,  comment:"Offres : Diana CDI · Lucile CDI · Émilie CDD",            open:"05/01" },
-  // ETIENNE
-  { r:"Confirmed Fullstack Back Dev",              rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:8,   mi:10, ps:8,   sl:false, comment:"Pipeline bon · 1 skills test · process trop long",      open:"15/10/25" },
-  { r:"Data Engineer",                             rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very high — feedback HM trop lent",         open:"16/12/25" },
-  { r:"Eng (Fullstack-Front) Senior",              rec:"Etienne", pts:2,   st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High",                                      open:"11/02" },
-  { r:"Eng (Fullstack-Front) Confirmed",           rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium",                                    open:"11/11/25" },
-  { r:"Eng (Fullstack-Back) Confirmed ×2",         rec:"Etienne", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"2 rôles — Confidence: High",                            open:"11/02" },
-  // CLÉMENT
-  { r:"SDR Manager",        rec:"Clément", pts:3,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very low — positionnement flou", open:"08/10/25" },
-  { r:"GHT Manager",        rec:"Clément", pts:2,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very low",                       open:"26/05/25" },
-  { r:"AM Senior",          rec:"Clément", pts:1.5, st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:"31/01" },
-  { r:"SDR",                rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium",                         open:"24/02" },
-  { r:"SDR Grands Comptes", rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
-  { r:"SDR SMB Junior",     rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
-  { r:"Revops Growth Mgr",  rec:"Clément", pts:1,   st:"Live",     pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very high",                      open:null    },
-  { r:"AM Manager",         rec:"Clément", pts:2,   st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
-  { r:"Manager AM GC",      rec:"Clément", pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
-  { r:"Manager AE GC",      rec:"Clément", pts:3,   st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
-  { r:"Enablement Manager", rec:"Clément", pts:1.5, st:"À ouvrir", pip:null, ca:null, mi:0, ps:null, sl:false, comment:null,                                         open:null    },
-  // GABRIELLE
-  { r:"Talent Acquisition Specialist", rec:"Gabrielle", pts:2, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:"12/11/25" },
-  // AGENCE
-  { r:"Head of Public Hospitals", rec:"Agence", pts:3, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:"05/09/25" },
+  { r:"GHT Manager", rec:"Clément", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very high", open:"25/03/26" },
+  { r:"SDR Manager", rec:"Pierre", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:23, ps:54, sl:false, comment:"Confidence: High", open:"08/10/25" },
+  { r:"Senior AM", rec:"Lucie", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:6, ps:16, sl:false, comment:"Confidence: Very high", open:"31/01/26" },
+  { r:"Senior AE", rec:"Lucie", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"16/04/26" },
+  { r:"Engineer (Fullstack - Back)", rec:"Maxime", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:9, ps:20, sl:false, comment:"Confidence: High", open:"01/12/25" },
+  { r:"Chief People Officer", rec:"Pierre", pts:3.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"23/02/26" },
+  { r:"Talent Acquisition Specialist", rec:"Lucie", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:10, ps:30, sl:false, comment:"Confidence: High", open:"12/11/25" },
+  { r:"Head of Public Hospitals", rec:"Pierre", pts:3.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Low", open:"05/09/25" },
+  { r:"Engineer (Fullstack - Back)", rec:"Etienne", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:9, ps:20, sl:false, comment:"Confidence: Medium", open:"01/12/25" },
+  { r:"Manual QA", rec:"Etienne", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:"24/04/26" },
+  { r:"Engineer (Fullstack - Front)", rec:"Etienne", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:6, ps:19, sl:false, comment:"Confidence: High", open:"11/02/26" },
+  { r:"Engineer (Fullstack - Back)", rec:"Etienne", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:9, ps:20, sl:false, comment:"Confidence: High", open:"11/02/26" },
+  { r:"Engineer (Fullstack - Back)", rec:"Etienne", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:9, ps:20, sl:false, comment:"Confidence: High", open:"11/02/26" },
+  { r:"AI / ML Engineer", rec:"Maxime", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:15, sl:false, comment:null, open:"13/02/26" },
+  { r:"Engineer (Fullstack - Back)", rec:"Etienne", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:9, ps:20, sl:false, comment:"Confidence: High", open:"11/02/26" },
+  { r:"Revops Growth Manager", rec:"Clément", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Very high", open:"16/02/26" },
+  { r:"Head of Data", rec:"Pierre", pts:3.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"04/03/26" },
+  { r:"AM Manager", rec:"Lucie", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"19/03/26" },
+  { r:"SDR Grands Comptes", rec:"Clément", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High", open:"12/02/26" },
+  { r:"SDR SMB Junior", rec:"Clément", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High", open:"12/02/26" },
+  { r:"Manager AM Grands Comptes", rec:"Clément", pts:3.0, st:"À ouvrir", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:null },
+  { r:"Manager AE Grands Comptes", rec:"Lucie", pts:3.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"16/03/26" },
+  { r:"Enablement Manager", rec:"Clément", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High", open:"01/03/26" },
+  { r:"Lead SRE", rec:"Maxime", pts:3.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High", open:"20/02/26" },
+  { r:"Senior Product Manager", rec:"Maxime", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:null },
+  { r:"Engineer (Fullstack - Front)", rec:"Maxime", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High", open:"04/03/26" },
+  { r:"Engineer (Fullstack - Back)", rec:"Maxime", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High", open:"04/03/26" },
+  { r:"Engineer (Fullstack - Front)", rec:"Etienne", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"16/03/26" },
+  { r:"Engineer (Fullstack - Back)", rec:"Maxime", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"16/03/26" },
+  { r:"Engineer (Fullstack - Back)", rec:"Maxime", pts:2.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"16/03/26" },
+  { r:"Assistant ADV & Facturation", rec:"Maxime", pts:1.0, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: High", open:"03/04/26" },
+  { r:"Senior AE", rec:"Lucie", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"23/04/26" },
+  { r:"Senior AE", rec:"Lucie", pts:1.5, st:"Live", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:"Confidence: Medium", open:"23/04/26" },
+  { r:"Senior Revenue Operations", rec:"Clément", pts:1.5, st:"À ouvrir", pip:"🔄", ca:null, mi:0, ps:null, sl:false, comment:null, open:null },
 ];
 
-const RECS = ["Pierre","Max","Etienne","Clément","Gabrielle"];
+const RECS = ["Pierre","Maxime","Etienne","Clément","Lucie"];
 
 const STYLE = {
   Pierre:    { bg:"#eff6ff", ac:"#3b82f6", hex:"#3b82f6" },
-  Max:       { bg:"#f0fdf4", ac:"#10b981", hex:"#10b981" },
+  Maxime:    { bg:"#f0fdf4", ac:"#10b981", hex:"#10b981" },
   Etienne:   { bg:"#fff7ed", ac:"#f97316", hex:"#f97316" },
   "Clément": { bg:"#faf5ff", ac:"#a855f7", hex:"#a855f7" },
-  Gabrielle: { bg:"#fdf2f8", ac:"#ec4899", hex:"#ec4899" },
+  Lucie:     { bg:"#fdf2f8", ac:"#ec4899", hex:"#ec4899" },
 };
 
 const PIP = {
@@ -586,7 +585,7 @@ function renderAlerts() {
         <div class="alert-roles">
           ${roles.map(d=>`<div class="alert-role-row"><span>${d.r}</span><span style="color:${ptColor(d.pts)}">${d.pts}pt</span></div>`).join("")}
         </div>
-        <div style="margin-top:10px;color:#ef4444;font-size:11px">→ Action : redistribuer vers Gabrielle (8pts disponibles)</div>
+        <div style="margin-top:10px;color:#ef4444;font-size:11px">→ Action : revoir la répartition des rôles avec Pierre et Lucie</div>
       </div>
     </div>`;
   });
@@ -619,15 +618,15 @@ function renderAlerts() {
   }
 
   // Capacité dispo Gabrielle
-  if (pts("Gabrielle") <= 4) {
-    const dispo = 10 - pts("Gabrielle");
+  if (pts("Lucie") <= 6) {
+    const dispo = 10 - pts("Lucie");
     html += `<div class="alert-card blue" style="animation-delay:0.1s">
       <div class="alert-head">
         <span style="font-size:18px">💡</span>
-        <span class="alert-title" style="color:#93c5fd">Capacité disponible — Gabrielle</span>
-        <span class="alert-pts" style="color:#3b82f6">${pts("Gabrielle")}pts</span>
+        <span class="alert-title" style="color:#93c5fd">Capacité disponible — Lucie</span>
+        <span class="alert-pts" style="color:#3b82f6">${pts("Lucie")}pts</span>
       </div>
-      <div class="alert-body">${dispo}pts disponibles sur 10 · 1 rôle actif<br>→ Candidat idéal pour reprise de charge depuis Max ou Clément</div>
+      <div class="alert-body">${dispo}pts disponibles sur 10 · 1 rôle actif<br>→ Candidat idéal pour reprise de charge depuis Maxime ou Clément</div>
     </div>`;
   }
 
@@ -676,57 +675,21 @@ function showTab(id, btn) {
   btn.classList.add("active");
 }
 
-// ── INIT — Live depuis Notion API ──
-async function loadFromNotion() {
-  // Afficher loader
-  document.getElementById('panel-pipeline').innerHTML = `
-    <div style="text-align:center;padding:60px;color:#94a3b8;font-size:14px">
-      <div style="font-size:28px;margin-bottom:12px">⏳</div>
-      Chargement des données Notion...
-    </div>`;
+// ── INIT ──
+renderKPIs();
+renderPipeline();
+renderCharge();
+renderForecast();
+renderAlerts();
 
-  try {
-    const res  = await fetch('/api/notion');
-    const json = await res.json();
-
-    if (!Array.isArray(json)) throw new Error(json.error || 'API error');
-
-    // Remplacer DATA global
-    DATA.length = 0;
-    json.forEach(r => DATA.push(r));
-
-    // Mapper les emojis pipeline vers codes courts
-    DATA.forEach(d => {
-      if (d.pip === '✅ Sécurisé 2 sem.') d.pip = '✅';
-      else if (d.pip === '⚠️ À risque')    d.pip = '⚠️';
-      else if (d.pip === '🔄 En construction') d.pip = '🔄';
-    });
-
-  } catch(e) {
-    console.warn('Notion API indisponible, utilisation des données en cache', e);
-  }
-
-  // Render
-  renderKPIs();
-  renderPipeline();
-  renderCharge();
-  renderForecast();
-  renderAlerts();
-
-  // Animate gauges
-  requestAnimationFrame(()=>{
-    document.querySelectorAll(".gauge-fill, .charge-bar-fill").forEach(el=>{
-      const w = el.style.width;
-      el.style.width = "0";
-      setTimeout(()=>{ el.style.width = w; }, 100);
-    });
+// Animate gauge fills on load
+requestAnimationFrame(()=>{
+  document.querySelectorAll(".gauge-fill, .charge-bar-fill").forEach(el=>{
+    const w = el.style.width;
+    el.style.width = "0";
+    setTimeout(()=>{ el.style.width = w; }, 100);
   });
-
-  // Refresh toutes les 5 minutes
-  setTimeout(loadFromNotion, 5 * 60 * 1000);
-}
-
-loadFromNotion();
+});
 </script>
 </body>
 </html>
