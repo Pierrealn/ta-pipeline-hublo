@@ -1,85 +1,282 @@
-Hiring Capacity
-Hublo · Talent Acquisition · FY2026
-Dernière MAJ
-01 juin 2026
-source : Recruitment Plan
-90
-Postes (tous statuts)
-28
-En cours
-3
-À ouvrir
-50
-Recrutés
-54,9%
-Plan complété
-Charge
-Pipeline
-Forecast
-Alertes
-P
-Pierre
-Head of TA · Plein
-2 actifs / plafond 3
-3 pts
-2 en cours
-11 clos
-M
-Maxime
-TA · Capacité OK
-6 actifs / plafond 8
-12.5 pts
-6 en cours
-18 clos
-E
-Etienne
-TA · Plein
-8 actifs / plafond 8
-12 pts
-8 en cours
-10 clos
-L
-Lucie
-TA · Capacité OK
-4 actifs / plafond 8
-10 pts
-3 en cours
-1 à ouvrir
-4 clos
-C
-Clément
-TA · Capacité OK
-6 actifs / plafond 8
-6.5 pts
-4 en cours
-2 à ouvrir
-4 clos
-M
-Manon
-TA · Capacité OK
-2 actifs / plafond 8
-3 pts
-2 en cours
-0 clos
-A
-Agence
-Externe · Hors plafond
-3 actifs
-5 pts
-3 en cours
-1 clos
-H
-Hiring manager
-HM · Hors plafond
-0 actifs
-0 pts
-0 en cours
-1 clos
-L
-Lucille
-Support · Hors plafond
-0 actifs
-0 pts
-0 en cours
-1 clos
-Charge active = postes En cours + À ouvrir · Plafond perso Pierre : 3 rôles / 8 pts (responsabilités leadership)
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiring Capacity — Hublo TA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f5f1; --card:#ffffff; --ink:#1a1a17; --muted:#8a877d; --line:#e7e4db;
+    --line2:#efece4; --accent:#1B3FB8; --accent-soft:#eaeefb;
+    --ok:#16794a; --ok-bg:#e4f3ea; --warn:#9a6b00; --warn-bg:#faf0d7; --bad:#a3372c; --bad-bg:#f8e5e1;
+    --pierre:#1B3FB8; --maxime:#0f9b6c; --etienne:#e0681c; --clement:#8338c5; --lucie:#c0357a; --manon:#0891b2; --agence:#6b7280; --hm:#9ca3af; --lucille:#9ca3af;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Geist',system-ui,sans-serif;font-size:14px;line-height:1.45;
+    background-image:radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);background-size:22px 22px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px 56px}
+  /* header */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;padding:30px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;flex-wrap:wrap;gap:16px}
+  .brand{display:flex;flex-direction:column;gap:5px}
+  .brand h1{font-family:'Fraunces',serif;font-size:30px;font-weight:600;letter-spacing:-0.01em;line-height:1}
+  .brand .sub{color:var(--muted);font-size:12.5px;letter-spacing:0.02em}
+  .brand .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:6px;animation:blink 2.4s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+  .stamp{text-align:right;color:var(--muted);font-size:11px;letter-spacing:0.04em}
+  .stamp b{display:block;color:var(--ink);font-size:13px;font-weight:600;letter-spacing:0}
+  /* kpis */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 16px 14px}
+  .kpi .n{font-family:'Fraunces',serif;font-size:30px;font-weight:600;line-height:1;letter-spacing:-0.01em}
+  .kpi .l{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;margin-top:7px}
+  .kpi .bar{height:3px;border-radius:2px;background:var(--line2);margin-top:11px;overflow:hidden}
+  .kpi .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  /* tabs */
+  .tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:24px;width:fit-content}
+  .tab{border:none;background:transparent;color:var(--muted);font-family:'Geist';font-size:13px;font-weight:500;padding:8px 16px;border-radius:8px;cursor:pointer;transition:.18s}
+  .tab:hover{color:var(--ink)}
+  .tab.active{background:var(--ink);color:#fff}
+  .panel{display:none;animation:fade .35s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* charge rows */
+  .crow{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 18px;margin-bottom:10px;display:grid;grid-template-columns:150px 1fr 168px;gap:18px;align-items:center}
+  .who{display:flex;align-items:center;gap:10px}
+  .ava{width:30px;height:30px;border-radius:8px;color:#fff;font-weight:700;font-size:12px;display:grid;place-items:center;flex-shrink:0}
+  .who .nm{font-weight:600}.who .ro{color:var(--muted);font-size:11px}
+  .gauge{position:relative}
+  .gauge .track{height:11px;border-radius:6px;background:var(--line2);overflow:hidden;position:relative}
+  .gauge .fill{height:100%;width:0;border-radius:6px;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  .gauge .cap{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.45;border-radius:2px}
+  .gauge .leg{display:flex;justify-content:space-between;margin-top:7px;font-size:11px;color:var(--muted)}
+  .gauge .leg b{color:var(--ink)}
+  .stat{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap}
+  .chip{font-size:10.5px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap}
+  .chip.live{background:var(--accent-soft);color:var(--accent)}
+  .chip.open{background:var(--warn-bg);color:var(--warn)}
+  .chip.done{background:var(--ok-bg);color:var(--ok)}
+  .badge{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;letter-spacing:.02em}
+  .badge.ok{background:var(--ok-bg);color:var(--ok)}
+  .badge.warn{background:var(--warn-bg);color:var(--warn)}
+  .badge.over{background:var(--bad-bg);color:var(--bad)}
+  /* pipeline */
+  .sech{font-family:'Fraunces',serif;font-size:16px;font-weight:600;margin:24px 0 12px;display:flex;align-items:center;gap:9px}
+  .sech .ct{font-family:'Geist';font-size:11px;font-weight:600;color:var(--muted);background:var(--card);border:1px solid var(--line);padding:1px 9px;border-radius:20px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;padding:11px 14px;border-bottom:1px solid var(--line);background:#fbfaf7}
+  td{padding:11px 14px;border-bottom:1px solid var(--line2);font-size:13px}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fbfaf7}
+  .conf{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:20px}
+  .c5{background:var(--ok-bg);color:var(--ok)}.c4{background:#e7f0e9;color:#3f7a55}
+  .c3{background:var(--warn-bg);color:var(--warn)}.c2{background:var(--bad-bg);color:var(--bad)}.c1{background:var(--bad-bg);color:var(--bad)}.c0{background:var(--line2);color:var(--muted)}
+  .dotrec{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  /* alerts */
+  .alert{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:11px;padding:14px 17px;margin-bottom:10px}
+  .alert.crit{border-left-color:var(--bad)}
+  .alert.good{border-left-color:var(--ok)}
+  .alert .at{font-weight:600;font-size:13.5px;margin-bottom:3px}
+  .alert .ad{color:var(--muted);font-size:12.5px}
+  .foot{text-align:center;color:var(--muted);font-size:11px;margin-top:32px;letter-spacing:.03em}
+  @media(max-width:780px){.kpis{grid-template-columns:repeat(2,1fr)}.crow{grid-template-columns:1fr;gap:12px}.stat{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="brand">
+      <h1>Hiring Capacity</h1>
+      <div class="sub"><span class="dot"></span>Hublo · Talent Acquisition · FY2026</div>
+    </div>
+    <div class="stamp">Dernière MAJ<b id="today"></b>source : Recruitment Plan</div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">90</div><div class="l">Postes (tous statuts)</div><div class="bar"><i style="--w:100%"></i></div></div>
+    <div class="kpi"><div class="n" style="color:var(--accent)">28</div><div class="l">En cours</div><div class="bar"><i style="--w:31%"></i></div></div>
+    <div class="kpi"><div class="n" style="color:var(--warn)">3</div><div class="l">À ouvrir</div><div class="bar"><i style="--w:3%"></i></div></div>
+    <div class="kpi"><div class="n" style="color:var(--ok)">50</div><div class="l">Recrutés</div><div class="bar"><i style="--w:56%"></i></div></div>
+    <div class="kpi"><div class="n">54,9<span style="font-size:18px">%</span></div><div class="l">Plan complété</div><div class="bar"><i style="--w:55%"></i></div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="tab('charge',this)">Charge</button>
+    <button class="tab" onclick="tab('pipeline',this)">Pipeline</button>
+    <button class="tab" onclick="tab('forecast',this)">Forecast</button>
+    <button class="tab" onclick="tab('alertes',this)">Alertes</button>
+  </div>
+
+  <!-- CHARGE -->
+  <div class="panel active" id="p-charge">
+    <div id="charge"></div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="panel" id="p-pipeline">
+    <div id="pipeline"></div>
+  </div>
+
+  <!-- FORECAST -->
+  <div class="panel" id="p-forecast">
+    <div class="sech">Répartition de la charge active <span class="ct">31 rôles En cours + À ouvrir</span></div>
+    <div id="forecast"></div>
+  </div>
+
+  <!-- ALERTES -->
+  <div class="panel" id="p-alertes">
+    <div id="alertes"></div>
+  </div>
+
+  <div class="foot">Charge active = postes En cours + À ouvrir · Plafond perso Pierre : 3 rôles / 8 pts (responsabilités leadership)</div>
+</div>
+
+<script>
+const TEAM = [
+  // name, role, color, total, encours, ouvrir, recrutes, pts, capRoles, capPts, isCore
+  {n:'Pierre',  r:'Head of TA',  c:'pierre',  tot:13, enc:2, ouv:0, rec:11, pts:3.0,  capR:3,  capP:8,  core:true},
+  {n:'Maxime',  r:'TA',          c:'maxime',  tot:30, enc:6, ouv:0, rec:18, pts:12.5, capR:8,  capP:15, core:true},
+  {n:'Etienne', r:'TA',          c:'etienne', tot:18, enc:8, ouv:0, rec:10, pts:12.0, capR:8,  capP:15, core:true},
+  {n:'Lucie',   r:'TA',          c:'lucie',   tot:8,  enc:3, ouv:1, rec:4,  pts:10.0, capR:8,  capP:15, core:true},
+  {n:'Clément', r:'TA',          c:'clement', tot:12, enc:4, ouv:2, rec:4,  pts:6.5,  capR:8,  capP:15, core:true},
+  {n:'Manon',   r:'TA',          c:'manon',   tot:2,  enc:2, ouv:0, rec:0,  pts:3.0,  capR:8,  capP:15, core:true},
+  {n:'Agence',  r:'Externe',     c:'agence',  tot:4,  enc:3, ouv:0, rec:1,  pts:5.0,  capR:99, capP:99, core:false},
+  {n:'Hiring manager', r:'HM',   c:'hm',      tot:2,  enc:0, ouv:0, rec:1,  pts:0,    capR:99, capP:99, core:false},
+  {n:'Lucille', r:'Support',     c:'lucille', tot:1,  enc:0, ouv:0, rec:1,  pts:0,    capR:99, capP:99, core:false},
+];
+
+const PIPE = [
+  // poste, axe, rec, color, statut, conf(0-5)
+  {p:'Engineer (Fullstack - Back)', a:'Engineering', r:'Etienne', c:'etienne', s:'En cours', cf:2},
+  {p:'Engineer (Fullstack - Back)', a:'Engineering', r:'Maxime',  c:'maxime',  s:'En cours', cf:2},
+  {p:'SDR Manager',                 a:'Sales',       r:'Manon',   c:'manon',   s:'En cours', cf:3},
+  {p:'Chief People Officer',        a:'HR',          r:'Agence',  c:'agence',  s:'En cours', cf:3},
+  {p:'Engineer (Fullstack - Back)', a:'Engineering', r:'Etienne', c:'etienne', s:'En cours', cf:3},
+  {p:'AM Manager',                  a:'Sales',       r:'Lucie',   c:'lucie',   s:'En cours', cf:3},
+  {p:'Manager AE Grands Comptes',   a:'Sales',       r:'Lucie',   c:'lucie',   s:'En cours', cf:3},
+  {p:'Engineer (Fullstack - Front)',a:'Engineering', r:'Etienne', c:'etienne', s:'En cours', cf:3},
+  {p:'Senior AE',                   a:'Sales',       r:'Agence',  c:'agence',  s:'En cours', cf:3},
+  {p:'Lead Data Engineer',          a:'Engineering', r:'Clément', c:'clement', s:'À ouvrir', cf:0},
+  {p:'Product Marketing',           a:'Product',     r:'Clément', c:'clement', s:'À ouvrir', cf:0},
+  {p:'Manager AM Grands Comptes',   a:'Sales',       r:'Lucie',   c:'lucie',   s:'À ouvrir', cf:0},
+  {p:'Head of PMM',                 a:'Product',     r:'Pierre',  c:'pierre',  s:'En cours', cf:0},
+  {p:'Senior Revenue Operations',   a:'Rev Ops',     r:'Pierre',  c:'pierre',  s:'En cours', cf:0},
+  {p:'AE SMB ×3',                   a:'Sales',       r:'Clément', c:'clement', s:'En cours', cf:0},
+  {p:'Manager AE SMB',              a:'Sales',       r:'Lucie',   c:'lucie',   s:'En cours', cf:0},
+  {p:'AE SMB',                      a:'Sales',       r:'Manon',   c:'manon',   s:'En cours', cf:0},
+  {p:'Senior AE',                   a:'Sales',       r:'Agence',  c:'agence',  s:'En cours', cf:4},
+  {p:'Manual QA',                   a:'Engineering', r:'Etienne', c:'etienne', s:'En cours', cf:4},
+  {p:'AI / ML Engineer',            a:'Engineering', r:'Maxime',  c:'maxime',  s:'En cours', cf:4},
+  {p:'Lead SRE',                    a:'Engineering', r:'Maxime',  c:'maxime',  s:'En cours', cf:4},
+  {p:'Engineer (Fullstack ×5)',     a:'Engineering', r:'Etienne', c:'etienne', s:'En cours', cf:4},
+  {p:'Engineer (Fullstack ×3)',     a:'Engineering', r:'Maxime',  c:'maxime',  s:'En cours', cf:4},
+  {p:'SDR KA Public',               a:'Sales',       r:'Clément', c:'clement', s:'En cours', cf:4},
+];
+const CONFLBL={5:'Très haute',4:'Haute',3:'Moyenne',2:'Basse',1:'Très basse',0:'À évaluer'};
+
+function col(c){return getComputedStyle(document.documentElement).getPropertyValue('--'+c).trim()}
+
+// CHARGE
+function renderCharge(){
+  let h='';
+  TEAM.forEach(t=>{
+    const active=t.enc+t.ouv;
+    const cR=t.capR, cP=t.capP;
+    const pctR = cR<90 ? Math.min(active/cR*100,140) : Math.min(active/8*100,100);
+    const ref = cR<90 ? cR : 8;
+    let badge, bcls;
+    if(cR<90){
+      if(active>cR){badge='Surcharge';bcls='over';}
+      else if(active>=cR-1){badge='Plein';bcls='warn';}
+      else{badge='Capacité OK';bcls='ok';}
+    } else {badge=t.core?'':'Hors plafond';bcls='';}
+    const capLeftPct = cR<90 ? Math.min(cR/Math.max(ref,active,cR)*100,100) : 100;
+    const fillW = Math.min(pctR,100);
+    const fc = active>ref ? col('bad') : (active>=ref-1?col('warn'):col(t.c));
+    h+=`<div class="crow">
+      <div class="who"><div class="ava" style="background:var(--${t.c})">${t.n[0]}</div>
+        <div><div class="nm">${t.n}</div><div class="ro">${t.r}${badge?' · <b style="color:var(--'+(bcls==='over'?'bad':bcls==='warn'?'warn':'ok')+')">'+badge+'</b>':''}</div></div></div>
+      <div class="gauge">
+        <div class="track"><div class="fill" data-w="${fillW}" style="background:${fc}"></div>
+          ${cR<90?`<div class="cap" style="left:${(ref/Math.max(ref,active)*100)>=100?100:(ref/Math.max(ref,active,1)*100)}%"></div>`:''}</div>
+        <div class="leg"><span><b>${active}</b> actifs ${cR<90?'/ plafond '+cR:''}</span><span><b>${t.pts}</b> pts</span></div>
+      </div>
+      <div class="stat">
+        <span class="chip live">${t.enc} en cours</span>
+        ${t.ouv?`<span class="chip open">${t.ouv} à ouvrir</span>`:''}
+        <span class="chip done">${t.rec} clos</span>
+      </div>
+    </div>`;
+  });
+  document.getElementById('charge').innerHTML=h;
+}
+
+// PIPELINE
+function renderPipeline(){
+  const enc=PIPE.filter(x=>x.s==='En cours'), ouv=PIPE.filter(x=>x.s==='À ouvrir');
+  function tbl(rows){
+    let r='<table><thead><tr><th>Poste</th><th>Axe</th><th>Recruteur</th><th>Confiance &lt;30j</th></tr></thead><tbody>';
+    rows.forEach(x=>{r+=`<tr>
+      <td style="font-weight:500">${x.p}</td>
+      <td style="color:var(--muted)">${x.a}</td>
+      <td><span class="dotrec" style="background:var(--${x.c})"></span>${x.r}</td>
+      <td><span class="conf c${x.cf}">${CONFLBL[x.cf]}</span></td></tr>`;});
+    return r+'</tbody></table>';
+  }
+  document.getElementById('pipeline').innerHTML=
+    `<div class="sech">En cours <span class="ct">${enc.length}</span></div>${tbl(enc)}
+     <div class="sech">À ouvrir <span class="ct">${ouv.length}</span></div>${tbl(ouv)}`;
+}
+
+// FORECAST — share of active load
+function renderForecast(){
+  const core=TEAM.filter(t=>t.enc+t.ouv>0);
+  const totalActive=core.reduce((s,t)=>s+t.enc+t.ouv,0);
+  let h='';
+  core.sort((a,b)=>(b.enc+b.ouv)-(a.enc+a.ouv));
+  core.forEach(t=>{
+    const a=t.enc+t.ouv, pct=(a/totalActive*100);
+    h+=`<div class="crow" style="grid-template-columns:150px 1fr 80px">
+      <div class="who"><div class="ava" style="background:var(--${t.c})">${t.n[0]}</div><div><div class="nm">${t.n}</div><div class="ro">${a} rôles actifs</div></div></div>
+      <div class="gauge"><div class="track"><div class="fill" data-w="${pct.toFixed(0)}" style="background:var(--${t.c})"></div></div>
+        <div class="leg"><span><b>${t.pts}</b> pts de pondération</span><span>${pct.toFixed(0)}% du pipe</span></div></div>
+      <div style="text-align:right;font-family:'Fraunces',serif;font-size:22px;font-weight:600">${a}</div>
+    </div>`;
+  });
+  document.getElementById('forecast').innerHTML=h;
+}
+
+// ALERTES
+function renderAlerts(){
+  const A=[
+    {cls:'good',t:'Pierre dans son plafond',d:'2 rôles actifs sur 3 max (3 pts / 8). Marge pour 1 closing supplémentaire si besoin.'},
+    {cls:'crit',t:'Etienne saturé — 8 rôles actifs',d:'Au plafond de 8. Charge concentrée sur l\'Engineering (Fullstack Back/Front). Risque de ralentissement si une nouvelle ouverture tombe.'},
+    {cls:'',t:'Maxime à 12,5 pts — charge la plus lourde',d:'6 rôles En cours dont AI/ML, Lead SRE et Fullstack seniors. Pondération max de l\'équipe, surveiller le débit.'},
+    {cls:'',t:'Lucie — 10 pts sur 4 rôles seniors',d:'AM Manager, Manager AE GC et Grands Comptes : profils manager difficiles. Densité de pondération élevée pour 4 rôles.'},
+    {cls:'crit',t:'2 rôles Fullstack Back en confiance basse',d:'Etienne + Maxime : closing <30j peu probable. Anticiper un sourcing renfort ou un mandat agence.'},
+    {cls:'',t:'3 postes à ouvrir non démarrés',d:'Lead Data Engineer, Product Marketing (Clément) et Manager AM GC (Lucie) : pas encore de pipe, à lancer.'},
+    {cls:'good',t:'50 postes recrutés — 54,9% du plan',d:'Plus de la moitié du plan FY2026 sécurisé. Reste 28 en cours + 3 à ouvrir + 5 à monitorer.'},
+  ];
+  document.getElementById('alertes').innerHTML=A.map(x=>
+    `<div class="alert ${x.cls}"><div class="at">${x.t}</div><div class="ad">${x.d}</div></div>`).join('');
+}
+
+function tab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  btn.classList.add('active');
+  animate();
+}
+function animate(){
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.fill').forEach(el=>{el.style.width='0';setTimeout(()=>el.style.width=el.dataset.w+'%',60);});
+    document.querySelectorAll('.kpi .bar i').forEach(el=>{const w=getComputedStyle(el).getPropertyValue('--w');el.style.width='0';setTimeout(()=>el.style.width=w,60);});
+  });
+}
+document.getElementById('today').textContent=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+renderCharge();renderPipeline();renderForecast();renderAlerts();animate();
+</script>
+</body>
+</html>
