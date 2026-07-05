@@ -2,7 +2,7 @@
 <html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hiring Capacity — Hublo TA</title>
 <style>
-:root{--prune:#23091C;--mure:#491B3C;--beige:#FAF7F1;--peche:#FFB695;--jaune:#FFF2A0;--orange:#FFD37A;--rose:#FFC2BD;--muted:#B08CA3;--cream:#EFE0EA;}
+:root{--prune:#23091C;--mure:#491B3C;--beige:#FAF7F1;--peche:#FFB695;--jaune:#FFF2A0;--muted:#B08CA3;--cream:#EFE0EA;}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,Helvetica,sans-serif;background:var(--prune);color:var(--beige);line-height:1.5;padding:32px 20px 60px}
 .wrap{max-width:1040px;margin:0 auto}
@@ -10,7 +10,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:var(--prune);color:var(--
 h1{font-size:36px;margin:6px 0 2px}
 .subtitle{color:var(--muted);font-size:14px;margin-bottom:4px}
 .maj{color:#6E4260;font-size:12px;margin-bottom:24px}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
 .kpi{background:var(--mure);border-radius:14px;padding:18px 16px;text-align:center}
 .kpi .num{font-size:34px;font-weight:bold;color:var(--jaune)}
 .kpi .lab{font-size:11px;color:var(--cream);margin-top:4px}
@@ -18,7 +18,7 @@ h1{font-size:36px;margin:6px 0 2px}
 .tab{background:var(--mure);color:var(--cream);border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit}
 .tab.active{background:var(--peche);color:var(--prune)}
 .panel{display:none} .panel.active{display:block}
-.card{background:var(--mure);border-radius:14px;padding:22px 22px 24px}
+.card{background:var(--mure);border-radius:14px;padding:22px}
 .card h2{font-size:17px;margin-bottom:4px}
 .card .hint{color:var(--muted);font-size:12.5px;margin-bottom:18px}
 .rec{margin-bottom:16px}
@@ -31,7 +31,6 @@ h1{font-size:36px;margin:6px 0 2px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;color:var(--peche);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid #6E4260}
 td{padding:8px 10px;border-bottom:1px solid #3A1530}
-.pill{color:var(--prune);font-size:11px;font-weight:bold;padding:2px 9px;border-radius:10px;white-space:nowrap}
 .axe{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .axe-lab{width:180px;font-size:13px;flex-shrink:0}
 .axe-bar{flex:1;height:10px;background:#2E1226;border-radius:5px;overflow:hidden}
@@ -45,15 +44,14 @@ td{padding:8px 10px;border-bottom:1px solid #3A1530}
 <body><div class="wrap">
 <div class="kicker">Hublo · Talent Acquisition · FY2026</div>
 <h1>Hiring Capacity</h1>
-<div class="subtitle">Répartition de la charge de l'équipe TA en points de pondération</div>
-<div class="maj">Dernière MAJ : 05/07/2026 · source : Recruitment Plan (fichier)</div>
+<div class="subtitle">Charge des recrutements <b>en cours</b>, en points de pondération</div>
+<div class="maj">Dernière MAJ : 05/07/2026 · source : Recruitment Plan (fichier) · postes « En cours » uniquement</div>
 
 <div class="kpis">
- <div class="kpi"><div class="num">94</div><div class="lab">Postes (tous statuts)</div></div>
- <div class="kpi"><div class="num">34</div><div class="lab">En cours / à monitorer</div></div>
- <div class="kpi"><div class="num">2</div><div class="lab">À ouvrir</div></div>
- <div class="kpi"><div class="num">54</div><div class="lab">Recrutés</div></div>
- <div class="kpi"><div class="num">57%</div><div class="lab">Plan complété</div></div>
+ <div class="kpi"><div class="num">27</div><div class="lab">Rôles en cours</div></div>
+ <div class="kpi"><div class="num">5</div><div class="lab">Recruteurs actifs</div></div>
+ <div class="kpi"><div class="num">45</div><div class="lab">Points de charge (total)</div></div>
+ <div class="kpi"><div class="num">9.0</div><div class="lab">Charge moyenne / recruteur</div></div>
 </div>
 
 <div class="tabs">
@@ -64,47 +62,29 @@ td{padding:8px 10px;border-bottom:1px solid #3A1530}
 </div>
 
 <div id="charge" class="panel active"><div class="card">
- <h2>Répartition de la charge active</h2>
- <div class="hint">Charge active = En cours + À monitorer + Stand by + À ouvrir · Seuil sain ≈ 9-10 pts / recruteur (barre claire) · Pondération : Junior 1 · Mid 1,5 · Senior 2 · Exec/Head 3</div>
- <div class="rec">
-      <div class="rec-head"><span class="rec-name">Maxime</span><span class="rec-pts" style="color:#B3453D">23.5 pts · 13 rôles · <b>surcharge</b></span></div>
-      <div class="bar"><div class="bar-fill" style="width:100.0%;background:#B3453D"></div><div class="bar-ceil" style="left:40.4%"></div></div>
-    </div><div class="rec">
-      <div class="rec-head"><span class="rec-name">Clément</span><span class="rec-pts" style="color:#B3453D">14.0 pts · 9 rôles · <b>surcharge</b></span></div>
-      <div class="bar"><div class="bar-fill" style="width:59.6%;background:#B3453D"></div><div class="bar-ceil" style="left:40.4%"></div></div>
-    </div><div class="rec">
-      <div class="rec-head"><span class="rec-name">Manon</span><span class="rec-pts" style="color:#D6A24C">10.0 pts · 5 rôles · <b>tension</b></span></div>
-      <div class="bar"><div class="bar-fill" style="width:42.6%;background:#D6A24C"></div><div class="bar-ceil" style="left:40.4%"></div></div>
-    </div><div class="rec">
-      <div class="rec-head"><span class="rec-name">Etienne</span><span class="rec-pts" style="color:#3F9C7C">9.0 pts · 6 rôles · <b>sain</b></span></div>
-      <div class="bar"><div class="bar-fill" style="width:38.3%;background:#3F9C7C"></div><div class="bar-ceil" style="left:40.4%"></div></div>
-    </div><div class="rec">
-      <div class="rec-head"><span class="rec-name">Pierre</span><span class="rec-pts" style="color:#3F9C7C">6.0 pts · 2 rôles · <b>sain</b></span></div>
-      <div class="bar"><div class="bar-fill" style="width:25.5%;background:#3F9C7C"></div><div class="bar-ceil" style="left:40.4%"></div></div>
-    </div><div class="rec">
-      <div class="rec-head"><span class="rec-name">Lucie</span><span class="rec-pts" style="color:#3F9C7C">3.0 pts · 1 rôles · <b>sain</b></span></div>
-      <div class="bar"><div class="bar-fill" style="width:12.8%;background:#3F9C7C"></div><div class="bar-ceil" style="left:40.4%"></div></div>
-    </div>
- <div class="legend">Vert = sain (≤9,5) · Ambre = tension (≤11) · Rouge = surcharge (&gt;11). Les points imputés par niveau quand la pondération n'est pas renseignée.</div>
+ <h2>Charge des recrutements en cours</h2>
+ <div class="hint">Seuil sain ≈ 9-10 pts / recruteur (barre claire) · Pondération : Junior 1 · Mid 1,5 · Senior 2 · Exec/Head 3</div>
+ <div class="rec"><div class="rec-head"><span class="rec-name">Maxime</span><span class="rec-pts" style="color:#B3453D">13.5 pts · 7 rôles · <b>surcharge</b></span></div><div class="bar"><div class="bar-fill" style="width:100.0%;background:#B3453D"></div><div class="bar-ceil" style="left:70.4%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Manon</span><span class="rec-pts" style="color:#D6A24C">10.0 pts · 5 rôles · <b>tension</b></span></div><div class="bar"><div class="bar-fill" style="width:74.1%;background:#D6A24C"></div><div class="bar-ceil" style="left:70.4%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Etienne</span><span class="rec-pts" style="color:#3F9C7C">9.0 pts · 6 rôles · <b>sain</b></span></div><div class="bar"><div class="bar-fill" style="width:66.7%;background:#3F9C7C"></div><div class="bar-ceil" style="left:70.4%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Clément</span><span class="rec-pts" style="color:#3F9C7C">6.5 pts · 5 rôles · <b>sain</b></span></div><div class="bar"><div class="bar-fill" style="width:48.1%;background:#3F9C7C"></div><div class="bar-ceil" style="left:70.4%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Pierre</span><span class="rec-pts" style="color:#3F9C7C">6.0 pts · 2 rôles · <b>sain</b></span></div><div class="bar"><div class="bar-fill" style="width:44.4%;background:#3F9C7C"></div><div class="bar-ceil" style="left:70.4%"></div></div></div>
+ <div class="legend">Vert = sain (≤9,5) · Ambre = tension (≤11) · Rouge = surcharge (&gt;11). Points imputés par niveau quand la pondération n'est pas renseignée.</div>
 </div></div>
 
 <div id="pipeline" class="panel"><div class="card">
- <h2>Pipeline actif — 36 rôles</h2>
- <div class="hint">Tous les rôles non clôturés, triés par statut puis pondération.</div>
- <table><thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur</th><th>Statut</th></tr></thead><tbody><tr><td>Lead SRE</td><td>Engineering</td><td style="text-align:center">3.0</td><td>Maxime</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Staff Engineer</td><td>Engineering</td><td style="text-align:center">3.0</td><td>Manon</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Senior Manager Entreprise
-Acquisition, BU Hôpitaux Publics</td><td>Sales</td><td style="text-align:center">3.0</td><td>Pierre</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Head of PMM</td><td>Product</td><td style="text-align:center">3.0</td><td>Pierre</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>GHT Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Clément</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>SDR Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Manon</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Senior Revenue Operations</td><td>Revenue Operations</td><td style="text-align:center">2.0</td><td>Manon</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Manager AE SMB</td><td>Sales</td><td style="text-align:center">2.0</td><td>Manon</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Product Manager</td><td>Product</td><td style="text-align:center">1.5</td><td>Maxime</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Senior Product Manager</td><td>Product</td><td style="text-align:center">1.5</td><td>Maxime</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">1.5</td><td>Maxime</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>SDR KA Public</td><td>Sales</td><td style="text-align:center">1.5</td><td>Clément</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Revops Growth Manager</td><td>Revenue Operations</td><td style="text-align:center">1.0</td><td>Manon</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td><span class="pill" style="background:#3F9C7C">En cours</span></td></tr><tr><td>GHT Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Maxime</td><td><span class="pill" style="background:#D6A24C">À monitorer</span></td></tr><tr><td>GHT Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Clément</td><td><span class="pill" style="background:#D6A24C">À monitorer</span></td></tr><tr><td>Lead Data Engineer</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Clément</td><td><span class="pill" style="background:#D6A24C">À monitorer</span></td></tr><tr><td>User Care Manager</td><td>User Care</td><td style="text-align:center">1.0</td><td>Maxime</td><td><span class="pill" style="background:#D6A24C">À monitorer</span></td></tr><tr><td>Product Manager</td><td>Product</td><td style="text-align:center">1.0</td><td>Maxime</td><td><span class="pill" style="background:#D6A24C">À monitorer</span></td></tr><tr><td>Lead Engineer (Fullstack)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td><span class="pill" style="background:#8A8378">Stand by</span></td></tr><tr><td>Lead Engineer (Fullstack)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td><span class="pill" style="background:#8A8378">Stand by</span></td></tr><tr><td>Product Marketing</td><td>Product</td><td style="text-align:center">2.0</td><td>Clément</td><td><span class="pill" style="background:#8A8378">Stand by</span></td></tr><tr><td>GHT Manager</td><td>Sales</td><td style="text-align:center">1.5</td><td>Clément</td><td><span class="pill" style="background:#8A8378">Stand by</span></td></tr><tr><td>Manager AM Grands Comptes</td><td>Sales</td><td style="text-align:center">3.0</td><td>Lucie</td><td><span class="pill" style="background:#127C7C">À ouvrir</span></td></tr><tr><td>Team Lead Product Design</td><td>Product</td><td style="text-align:center">2.0</td><td>Maxime</td><td><span class="pill" style="background:#127C7C">À ouvrir</span></td></tr></tbody></table>
+ <h2>Rôles en cours — 25</h2>
+ <div class="hint">Triés par pondération décroissante.</div>
+ <table><thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur</th><th>Niveau</th></tr></thead><tbody><tr><td>Lead SRE</td><td>Engineering</td><td style="text-align:center">3.0</td><td>Maxime</td><td style="text-align:center">Manager</td></tr><tr><td>Staff Engineer</td><td>Engineering</td><td style="text-align:center">3.0</td><td>Manon</td><td style="text-align:center">Staff</td></tr><tr><td>Senior Manager Entreprise
+Acquisition, BU Hôpitaux Publics</td><td>Sales</td><td style="text-align:center">3.0</td><td>Pierre</td><td style="text-align:center">Manager</td></tr><tr><td>Head of PMM</td><td>Product</td><td style="text-align:center">3.0</td><td>Pierre</td><td style="text-align:center">Head of</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>SDR Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Manon</td><td style="text-align:center">Manager</td></tr><tr><td>Senior Revenue Operations</td><td>Revenue Operations</td><td style="text-align:center">2.0</td><td>Manon</td><td style="text-align:center">Senior</td></tr><tr><td>Manager AE SMB</td><td>Sales</td><td style="text-align:center">2.0</td><td>Manon</td><td style="text-align:center">Manager</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td style="text-align:center">Senior</td></tr><tr><td>GHT Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>Product Manager</td><td>Product</td><td style="text-align:center">1.5</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>Senior Product Manager</td><td>Product</td><td style="text-align:center">1.5</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">1.5</td><td>Maxime</td><td style="text-align:center">Confirmed</td></tr><tr><td>SDR KA Public</td><td>Sales</td><td style="text-align:center">1.5</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>Revops Growth Manager</td><td>Revenue Operations</td><td style="text-align:center">1.0</td><td>Manon</td><td style="text-align:center">Confirmed</td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td style="text-align:center">Confirmed</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td style="text-align:center">Confirmed</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td style="text-align:center">Confirmed</td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr></tbody></table>
 </div></div>
 
 <div id="axes" class="panel"><div class="card">
- <h2>Charge active par axe analytique</h2>
- <div class="hint">Où se concentre l'effort de recrutement en ce moment.</div>
- <div class="axe"><span class="axe-lab">Engineering</span><div class="axe-bar"><div class="axe-fill" style="width:100.0%"></div></div><span class="axe-n">15</span></div><div class="axe"><span class="axe-lab">Sales</span><div class="axe-bar"><div class="axe-fill" style="width:80.0%"></div></div><span class="axe-n">12</span></div><div class="axe"><span class="axe-lab">Product</span><div class="axe-bar"><div class="axe-fill" style="width:40.0%"></div></div><span class="axe-n">6</span></div><div class="axe"><span class="axe-lab">Revenue Operations</span><div class="axe-bar"><div class="axe-fill" style="width:13.3%"></div></div><span class="axe-n">2</span></div><div class="axe"><span class="axe-lab">User Care</span><div class="axe-bar"><div class="axe-fill" style="width:6.7%"></div></div><span class="axe-n">1</span></div>
+ <h2>Rôles en cours par axe analytique</h2>
+ <div class="hint">Où se concentre l'effort de recrutement actif.</div>
+ <div class="axe"><span class="axe-lab">Engineering</span><div class="axe-bar"><div class="axe-fill" style="width:100.0%"></div></div><span class="axe-n">12</span></div><div class="axe"><span class="axe-lab">Sales</span><div class="axe-bar"><div class="axe-fill" style="width:66.7%"></div></div><span class="axe-n">8</span></div><div class="axe"><span class="axe-lab">Product</span><div class="axe-bar"><div class="axe-fill" style="width:25.0%"></div></div><span class="axe-n">3</span></div><div class="axe"><span class="axe-lab">Revenue Operations</span><div class="axe-bar"><div class="axe-fill" style="width:16.7%"></div></div><span class="axe-n">2</span></div>
 </div></div>
 
 <div id="alertes" class="panel"><div class="card">
  <h2>Points d'attention</h2>
- <div class="hint">Surcharges, tensions et rôles à faible confiance de clôture.</div>
- <div class="alert" style="border-left:3px solid #B3453D"><span class="alert-tag" style="color:#B3453D">SURCHARGE</span> Maxime est à 23.5 pts (13 rôles) — bien au-dessus du seuil sain (~9-10 pts). Redistribuer ou prioriser.</div><div class="alert" style="border-left:3px solid #B3453D"><span class="alert-tag" style="color:#B3453D">SURCHARGE</span> Clément est à 14.0 pts (9 rôles) — bien au-dessus du seuil sain (~9-10 pts). Redistribuer ou prioriser.</div><div class="alert" style="border-left:3px solid #D6A24C"><span class="alert-tag" style="color:#D6A24C">TENSION</span> Manon est à 10.0 pts — en tension, à surveiller.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Engineer (Fullstack - Back) (Maxime) — confiance Low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> GHT Manager (Clément) — confiance Very low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Engineer (Fullstack - Back) (Etienne) — confiance Low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Senior Manager Entreprise
+ <div class="hint">Tensions de charge et rôles à faible confiance de clôture.</div>
+ <div class="alert" style="border-left:3px solid #B3453D"><span class="alert-tag" style="color:#B3453D">SURCHARGE</span> Maxime est à 13.5 pts (7 rôles en cours) — au-dessus du seuil sain (~9-10 pts). Redistribuer ou prioriser.</div><div class="alert" style="border-left:3px solid #D6A24C"><span class="alert-tag" style="color:#D6A24C">TENSION</span> Manon est à 10.0 pts — en tension, à surveiller.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Engineer (Fullstack - Back) (Maxime) — confiance Low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Engineer (Fullstack - Back) (Etienne) — confiance Low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> GHT Manager (Clément) — confiance Very low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Senior Manager Entreprise
 Acquisition, BU Hôpitaux Publics (Pierre) — confiance Low de clôture &lt;30j.</div>
 </div></div>
 
@@ -113,8 +93,7 @@ Acquisition, BU Hôpitaux Publics (Pierre) — confiance Low de clôture &lt;30j
 function show(id,btn){
  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- btn.classList.add('active');
+ document.getElementById(id).classList.add('active'); btn.classList.add('active');
 }
 </script>
 </body></html>
