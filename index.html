@@ -1,92 +1,331 @@
 <!DOCTYPE html>
-<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hiring Capacity — Hublo TA</title>
 <style>
-:root{--prune:#23091C;--mure:#491B3C;--beige:#FAF7F1;--peche:#FFB695;--jaune:#FFF2A0;--muted:#B08CA3;--cream:#EFE0EA;}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:var(--prune);color:var(--beige);line-height:1.5;padding:32px 20px 60px}
-.wrap{max-width:1040px;margin:0 auto}
-.kicker{color:var(--peche);font-size:12px;font-weight:bold;letter-spacing:2px;text-transform:uppercase}
-h1{font-size:36px;margin:6px 0 2px}
-.subtitle{color:var(--muted);font-size:14px;margin-bottom:4px}
-.maj{color:#6E4260;font-size:12px;margin-bottom:24px}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
-.kpi{background:var(--mure);border-radius:14px;padding:18px 16px;text-align:center}
-.kpi .num{font-size:34px;font-weight:bold;color:var(--jaune)}
-.kpi .lab{font-size:11px;color:var(--cream);margin-top:4px}
-.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.tab{background:var(--mure);color:var(--cream);border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit}
-.tab.active{background:var(--peche);color:var(--prune)}
-.panel{display:none} .panel.active{display:block}
-.card{background:var(--mure);border-radius:14px;padding:22px}
-.card h2{font-size:17px;margin-bottom:4px}
-.card .hint{color:var(--muted);font-size:12.5px;margin-bottom:18px}
-.rec{margin-bottom:16px}
-.rec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
-.rec-name{font-weight:bold;font-size:15px}
-.rec-pts{font-size:12.5px}
-.bar{position:relative;height:12px;background:#2E1226;border-radius:6px;overflow:hidden}
-.bar-fill{height:100%;border-radius:6px}
-.bar-ceil{position:absolute;top:-3px;width:2px;height:18px;background:var(--cream);opacity:.5}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;color:var(--peche);font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid #6E4260}
-td{padding:8px 10px;border-bottom:1px solid #3A1530}
-.axe{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.axe-lab{width:180px;font-size:13px;flex-shrink:0}
-.axe-bar{flex:1;height:10px;background:#2E1226;border-radius:5px;overflow:hidden}
-.axe-fill{height:100%;background:var(--peche);border-radius:5px}
-.axe-n{width:28px;text-align:right;font-size:13px;font-weight:bold;color:var(--jaune)}
-.alert{background:#2E1226;border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:13px}
-.alert-tag{font-weight:bold;font-size:11px;letter-spacing:.5px;margin-right:6px}
-.legend{margin-top:16px;font-size:11.5px;color:var(--muted)}
-@media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}.axe-lab{width:110px}}
-</style></head>
-<body><div class="wrap">
-<div class="kicker">Hublo · Talent Acquisition · FY2026</div>
-<h1>Hiring Capacity</h1>
-<div class="subtitle">Charge des recrutements <b>en cours</b>, en points de pondération</div>
-<div class="maj">Dernière MAJ : 05/07/2026 · source : Recruitment Plan (fichier) · postes « En cours » uniquement</div>
-<div class="kpis">
- <div class="kpi"><div class="num">26</div><div class="lab">Rôles en cours</div></div>
- <div class="kpi"><div class="num">5</div><div class="lab">Recruteurs actifs</div></div>
- <div class="kpi"><div class="num">43</div><div class="lab">Points de charge (total)</div></div>
- <div class="kpi"><div class="num">8.6</div><div class="lab">Charge moyenne / recruteur</div></div>
+  :root{
+    /* Palette officielle Hublo Brand Book V.06 */
+    --prune:#23091C; --mure:#491B3C; --beige:#FAF7F1;
+    --jaune:#FFF2A0; --peche:#FFB695; --peche-grad-start:#FFAB93; --peche-grad-end:#FFF2A0;
+    --orange:#FFD37A; --rose:#FFC2BD; --blanc:#FFFFFF;
+    /* Neutres d'interface (hors charte, usage fonctionnel uniquement) */
+    --ink:var(--prune); --muted:#8a7f75; --line:#E8DED2; --card:#ffffff; --surface:#F3ECE0;
+    --ok:#3E7D5C; --ok-bg:#E4F1E9; --warn:#B87A2E; --warn-bg:#FBEFDD; --bad:#B8402F; --bad-bg:#FBE7E2;
+    /* Avatars recruteurs — uniquement couleurs de la charte (accent + secondaire) */
+    --maxime:var(--mure); --clement:var(--orange); --etienne:var(--rose); --manon:var(--peche); --pierre:var(--prune);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--beige); color:var(--prune); font-family:'Inter', Arial, "Helvetica Neue", sans-serif; font-size:14px; line-height:1.5;}
+  h1,h2,.serif{font-family:Georgia,'Times New Roman',serif;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 60px}
+
+  .head{background:linear-gradient(135deg, var(--peche-grad-start), var(--peche-grad-end)); color:var(--prune); padding:34px 0 26px; margin-bottom:28px;}
+  .head-in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .brand h1{font-size:28px;font-weight:700;letter-spacing:-0.01em;line-height:1;color:var(--prune)}
+  .brand .sub{color:var(--prune);opacity:.72;font-size:12.5px;letter-spacing:0.04em;margin-top:8px;font-weight:600;text-transform:uppercase}
+  .brand .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--prune);margin-right:7px;animation:blink 2.4s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+  .stamp{text-align:right;color:var(--prune);opacity:.72;font-size:11.5px;letter-spacing:0.03em}
+  .stamp b{display:block;color:var(--prune);opacity:1;font-size:13px;margin-bottom:2px;font-weight:700}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:30px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .kpi .n{font-size:26px;font-weight:700;line-height:1;font-family:Georgia,serif}
+  .kpi .l{color:var(--muted);font-size:11px;letter-spacing:0.03em;margin-top:6px;text-transform:uppercase;font-weight:600}
+
+  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:22px}
+  .tab{background:none;border:none;padding:10px 16px;font-family:inherit;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;letter-spacing:0.01em}
+  .tab.active{color:var(--prune);border-bottom-color:var(--peche)}
+  .panel{display:none}
+  .panel.active{display:block}
+
+  .rec-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:10px}
+  .rec-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+  .rec-name{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+  .avatar{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12.5px;flex-shrink:0}
+  .rec-pts{font-weight:700;font-size:15px}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:0.03em;padding:3px 9px;border-radius:20px;text-transform:uppercase}
+  .tag.ok{background:var(--ok-bg);color:var(--ok)}
+  .tag.warn{background:var(--warn-bg);color:var(--warn)}
+  .tag.bad{background:var(--bad-bg);color:var(--bad)}
+  .charge-bar{height:9px;background:var(--surface);border-radius:5px;overflow:hidden}
+  .charge-bar i{display:block;height:100%;border-radius:5px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .rec-foot{display:flex;justify-content:space-between;margin-top:8px;font-size:11.5px;color:var(--muted)}
+  .legend{font-size:11.5px;color:var(--muted);margin:4px 0 18px}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  thead th{text-align:left;padding:10px 12px;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);font-weight:700;background:var(--surface);border-bottom:1px solid var(--line)}
+  tbody td{padding:9px 12px;border-bottom:1px solid var(--line);font-size:13px}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--surface)}
+  .who{display:inline-flex;align-items:center;gap:7px;font-weight:700}
+  .dotc{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .pill{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:12px;background:var(--surface);color:var(--muted)}
+
+  .sech{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin:26px 0 12px}
+  .sech:first-child{margin-top:0}
+
+  .axe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .axe-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .axe-card .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;color:var(--muted);margin-bottom:8px}
+  .axe-card .cnt{font-size:24px;font-weight:700;font-family:Georgia,serif}
+  .axe-card .fill-bg{height:5px;background:var(--surface);border-radius:3px;margin-top:10px;overflow:hidden}
+  .axe-card .fill-bg i{display:block;height:100%;border-radius:3px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+
+  .alert{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:13px 16px;margin-bottom:9px}
+  .alert.bad{border-left-color:var(--bad)}
+  .alert.warn{border-left-color:var(--warn)}
+  .alert.ok{border-left-color:var(--ok)}
+  .alert .at{font-weight:700;font-size:13.5px;margin-bottom:3px}
+  .alert .ad{color:var(--muted);font-size:12.5px}
+
+  .foot{text-align:center;color:var(--muted);font-size:11px;margin-top:36px;letter-spacing:.03em}
+
+  @media(max-width:820px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .axe-grid{grid-template-columns:repeat(2,1fr)}
+    table{display:block;overflow-x:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div class="head-in">
+    <div class="brand">
+      <h1>Hiring Capacity</h1>
+      <div class="sub"><span class="dot"></span>Hublo · Talent Acquisition · FY2026</div>
+    </div>
+    <div class="stamp"><b id="today"></b>Source : Recruitment Plan (fichier) · postes « En cours » et « À ouvrir »</div>
+  </div>
 </div>
-<div class="tabs">
- <button class="tab active" onclick="show('charge',this)">Charge</button>
- <button class="tab" onclick="show('pipeline',this)">Pipeline</button>
- <button class="tab" onclick="show('axes',this)">Axes</button>
- <button class="tab" onclick="show('alertes',this)">Alertes</button>
+
+<div class="wrap">
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">31</div><div class="l">Rôles en cours</div></div>
+    <div class="kpi"><div class="n">4</div><div class="l">Rôles à ouvrir</div></div>
+    <div class="kpi"><div class="n">6</div><div class="l">Recruteurs actifs</div></div>
+    <div class="kpi"><div class="n">55</div><div class="l">Points de charge (en cours)</div></div>
+    <div class="kpi"><div class="n">9,2</div><div class="l">Charge moyenne / recruteur</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="tab('charge',this)">Charge</button>
+    <button class="tab" onclick="tab('pipeline',this)">Pipeline</button>
+    <button class="tab" onclick="tab('aouvrir',this)">À ouvrir</button>
+    <button class="tab" onclick="tab('axes',this)">Axes</button>
+    <button class="tab" onclick="tab('alertes',this)">Alertes</button>
+  </div>
+
+  <!-- CHARGE -->
+  <div class="panel active" id="p-charge">
+    <div class="sech">Charge des recrutements en cours</div>
+    <div class="legend">Seuil sain ≈ 9–9,5 pts / recruteur · Pondération : Junior 1 · Mid 1,5 · Senior 2 · Exec/Head 3<br>Vert = sain (≤9,5) · Ambre = tension (≤11) · Rouge = surcharge (&gt;11). Agence incluse au même titre que les recruteurs internes.</div>
+    <div id="charge"></div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="panel" id="p-pipeline">
+    <div class="sech">Rôles en cours — 31 · triés par pondération décroissante</div>
+    <table>
+      <thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur</th><th>Niveau</th><th>Confiance &lt;30j</th></tr></thead>
+      <tbody id="pipeline-body"></tbody>
+    </table>
+  </div>
+
+  <!-- À OUVRIR -->
+  <div class="panel" id="p-aouvrir">
+    <div class="sech">Rôles à ouvrir — 4 · jamais démarrés</div>
+    <table>
+      <thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur</th><th>Niveau</th></tr></thead>
+      <tbody id="aouvrir-body"></tbody>
+    </table>
+  </div>
+
+  <!-- AXES -->
+  <div class="panel" id="p-axes">
+    <div class="sech">Rôles en cours par axe analytique</div>
+    <div class="axe-grid" id="axe-grid"></div>
+  </div>
+
+  <!-- ALERTES -->
+  <div class="panel" id="p-alertes">
+    <div class="sech">Points d'attention</div>
+    <div id="alertes"></div>
+  </div>
+
+  <div class="foot">Snapshot généré depuis « Hublo FY2026 Recruitment Plan » (onglet Recruitment) · pas de rafraîchissement automatique</div>
 </div>
-<div id="charge" class="panel active"><div class="card">
- <h2>Charge des recrutements en cours</h2>
- <div class="hint">Seuil sain ≈ 9-10 pts / recruteur (barre claire) · Pondération : Junior 1 · Mid 1,5 · Senior 2 · Exec/Head 3</div>
- <div class="rec"><div class="rec-head"><span class="rec-name">Maxime</span><span class="rec-pts" style="color:#B3453D">11.5 pts · 6 rôles · <b>surcharge</b></span></div><div class="bar"><div class="bar-fill" style="width:100.0%;background:#B3453D"></div><div class="bar-ceil" style="left:82.6%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Manon</span><span class="rec-pts" style="color:#D6A24C">10.0 pts · 5 rôles · <b>tension</b></span></div><div class="bar"><div class="bar-fill" style="width:87.0%;background:#D6A24C"></div><div class="bar-ceil" style="left:82.6%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Etienne</span><span class="rec-pts" style="color:#3F9C7C">9.0 pts · 6 rôles · <b>sain</b></span></div><div class="bar"><div class="bar-fill" style="width:78.3%;background:#3F9C7C"></div><div class="bar-ceil" style="left:82.6%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Clément</span><span class="rec-pts" style="color:#3F9C7C">6.5 pts · 5 rôles · <b>sain</b></span></div><div class="bar"><div class="bar-fill" style="width:56.5%;background:#3F9C7C"></div><div class="bar-ceil" style="left:82.6%"></div></div></div><div class="rec"><div class="rec-head"><span class="rec-name">Pierre</span><span class="rec-pts" style="color:#3F9C7C">6.0 pts · 2 rôles · <b>sain</b></span></div><div class="bar"><div class="bar-fill" style="width:52.2%;background:#3F9C7C"></div><div class="bar-ceil" style="left:82.6%"></div></div></div>
- <div class="legend">Vert = sain (≤9,5) · Ambre = tension (≤11) · Rouge = surcharge (&gt;11). Points imputés par niveau quand la pondération n'est pas renseignée.</div>
-</div></div>
-<div id="pipeline" class="panel"><div class="card">
- <h2>Rôles en cours — 24</h2>
- <div class="hint">Triés par pondération décroissante.</div>
- <table><thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur</th><th>Niveau</th></tr></thead><tbody><tr><td>Lead SRE</td><td>Engineering</td><td style="text-align:center">3.0</td><td>Maxime</td><td style="text-align:center">Manager</td></tr><tr><td>Staff Engineer</td><td>Engineering</td><td style="text-align:center">3.0</td><td>Manon</td><td style="text-align:center">Staff</td></tr><tr><td>Senior Manager Entreprise
-Acquisition, BU Hôpitaux Publics</td><td>Sales</td><td style="text-align:center">3.0</td><td>Pierre</td><td style="text-align:center">Manager</td></tr><tr><td>Head of PMM</td><td>Product</td><td style="text-align:center">3.0</td><td>Pierre</td><td style="text-align:center">Head of</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>SDR Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Manon</td><td style="text-align:center">Manager</td></tr><tr><td>Senior Revenue Operations</td><td>Revenue Operations</td><td style="text-align:center">2.0</td><td>Manon</td><td style="text-align:center">Senior</td></tr><tr><td>Manager AE SMB</td><td>Sales</td><td style="text-align:center">2.0</td><td>Manon</td><td style="text-align:center">Manager</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">2.0</td><td>Etienne</td><td style="text-align:center">Senior</td></tr><tr><td>GHT Manager</td><td>Sales</td><td style="text-align:center">2.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>Product Manager</td><td>Product</td><td style="text-align:center">1.5</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>Senior Product Manager</td><td>Product</td><td style="text-align:center">1.5</td><td>Maxime</td><td style="text-align:center">Senior</td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">1.5</td><td>Maxime</td><td style="text-align:center">Confirmed</td></tr><tr><td>SDR KA Public</td><td>Sales</td><td style="text-align:center">1.5</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>Revops Growth Manager</td><td>Revenue Operations</td><td style="text-align:center">1.0</td><td>Manon</td><td style="text-align:center">Confirmed</td></tr><tr><td>Engineer (Fullstack - Front)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td style="text-align:center">Confirmed</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td style="text-align:center">Confirmed</td></tr><tr><td>Engineer (Fullstack - Back)</td><td>Engineering</td><td style="text-align:center">1.0</td><td>Etienne</td><td style="text-align:center">Confirmed</td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr><tr><td>AE SMB</td><td>Sales</td><td style="text-align:center">1.0</td><td>Clément</td><td style="text-align:center">Confirmed</td></tr></tbody></table>
-</div></div>
-<div id="axes" class="panel"><div class="card">
- <h2>Rôles en cours par axe analytique</h2>
- <div class="hint">Où se concentre l'effort de recrutement actif.</div>
- <div class="axe"><span class="axe-lab">Engineering</span><div class="axe-bar"><div class="axe-fill" style="width:100.0%"></div></div><span class="axe-n">11</span></div><div class="axe"><span class="axe-lab">Sales</span><div class="axe-bar"><div class="axe-fill" style="width:72.7%"></div></div><span class="axe-n">8</span></div><div class="axe"><span class="axe-lab">Product</span><div class="axe-bar"><div class="axe-fill" style="width:27.3%"></div></div><span class="axe-n">3</span></div><div class="axe"><span class="axe-lab">Revenue Operations</span><div class="axe-bar"><div class="axe-fill" style="width:18.2%"></div></div><span class="axe-n">2</span></div>
-</div></div>
-<div id="alertes" class="panel"><div class="card">
- <h2>Points d'attention</h2>
- <div class="hint">Tensions de charge et rôles à faible confiance de clôture.</div>
- <div class="alert" style="border-left:3px solid #B3453D"><span class="alert-tag" style="color:#B3453D">SURCHARGE</span> Maxime est à 11.5 pts (6 rôles en cours) — au-dessus du seuil sain (~9-10 pts). Redistribuer ou prioriser.</div><div class="alert" style="border-left:3px solid #D6A24C"><span class="alert-tag" style="color:#D6A24C">TENSION</span> Manon est à 10.0 pts — en tension, à surveiller.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Engineer (Fullstack - Back) (Maxime) — confiance Low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Engineer (Fullstack - Back) (Etienne) — confiance Low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> GHT Manager (Clément) — confiance Very low de clôture &lt;30j.</div><div class="alert" style="border-left:3px solid #C97A5A"><span class="alert-tag" style="color:#C97A5A">RISQUE</span> Senior Manager Entreprise
-Acquisition, BU Hôpitaux Publics (Pierre) — confiance Low de clôture &lt;30j.</div>
-</div></div>
-</div>
+
 <script>
-function show(id,btn){
- document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
- document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
- document.getElementById(id).classList.add('active'); btn.classList.add('active');
+const COLORS = {Maxime:'var(--maxime)',Clément:'var(--clement)',Manon:'var(--manon)',Etienne:'var(--etienne)',Pierre:'var(--pierre)',Agence:'var(--jaune)'};
+const TEXT_ON = {Maxime:'var(--blanc)',Clément:'var(--prune)',Manon:'var(--prune)',Etienne:'var(--prune)',Pierre:'var(--blanc)',Agence:'var(--prune)'};
+
+const LIVE = [
+  {role:"Lead Engineer (Fullstack)", axe:"Engineering", pts:3, rec:"Maxime", level:"Senior", conf:"Medium"},
+  {role:"Chief People Officer", axe:"HR", pts:3, rec:"Agence", level:"C-level", conf:"Medium"},
+  {role:"Senior Manager Entreprise Acquisition, BU Hôpitaux Publics", axe:"Sales", pts:3, rec:"Pierre", level:"Manager", conf:"Low"},
+  {role:"Head of PMM", axe:"Product", pts:3, rec:"Agence", level:"Head of", conf:null},
+  {role:"Lead SRE", axe:"Engineering", pts:3, rec:"Maxime", level:"Manager", conf:"High"},
+  {role:"Staff Engineer", axe:"Engineering", pts:3, rec:"Manon", level:"Staff", conf:"Medium"},
+  {role:"GHT Manager", axe:"Sales", pts:2, rec:"Clément", level:"Confirmed", conf:"Very low"},
+  {role:"SDR Manager", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"Medium"},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Maxime", level:"Senior", conf:"High"},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High"},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High"},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"Low"},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Maxime", level:"Senior", conf:"Low"},
+  {role:"Senior Revenue Operations", axe:"Revenue Operations", pts:2, rec:"Manon", level:"Senior", conf:"High"},
+  {role:"Team Lead Product Design", axe:"Product", pts:2, rec:"Pierre", level:"Manager", conf:"High"},
+  {role:"Manager AE SMB", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"High"},
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Maxime", level:"Senior", conf:"Medium"},
+  {role:"Senior Product Manager", axe:"Product", pts:1.5, rec:"Maxime", level:"Senior", conf:"Very high"},
+  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1.5, rec:"Maxime", level:"Confirmed", conf:"High"},
+  {role:"Senior HR Ops", axe:"HR", pts:1.5, rec:"Pierre", level:"Senior", conf:"Medium"},
+  {role:"AE SMB", axe:"Sales", pts:1, rec:"Clément", level:"Confirmed", conf:"High"},
+  {role:"AE SMB", axe:"Sales", pts:1, rec:"Clément", level:"Confirmed", conf:"High"},
+  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"Medium"},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"High"},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"High"},
+  {role:"User Care Manager", axe:"User Care", pts:1, rec:"Clément", level:"Junior", conf:"High"},
+  {role:"Senior AE", axe:"Sales", pts:1, rec:"Agence", level:"Senior", conf:"Medium"},
+  {role:"AE SMB", axe:"Sales", pts:1, rec:"Clément", level:"Confirmed", conf:"High"},
+  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Clément", level:"Junior", conf:"High"},
+  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Clément", level:"Junior", conf:"High"},
+  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Clément", level:"Confirmed", conf:"High"},
+];
+
+const A_OUVRIR = [
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Maxime", level:"Senior"},
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Maxime", level:"Senior"},
+  {role:"CSM", axe:"Customer Success", pts:1, rec:"Pierre", level:"Confirmed"},
+  {role:"AE SMB", axe:"Sales", pts:1, rec:"Pierre", level:"Confirmed"},
+];
+
+function recTotals(list){
+  const t = {};
+  list.forEach(r=>{
+    if(!t[r.rec]) t[r.rec] = {pts:0,count:0};
+    t[r.rec].pts += r.pts; t[r.rec].count += 1;
+  });
+  return t;
 }
+function statusOf(pts){
+  if(pts > 11) return {cls:'bad',label:'Surcharge'};
+  if(pts > 9.5) return {cls:'warn',label:'Tension'};
+  return {cls:'ok',label:'Sain'};
+}
+function confColor(c){
+  if(c==='Very low'||c==='Low') return 'var(--bad)';
+  if(c==='Medium') return 'var(--warn)';
+  if(c==='High'||c==='Very high') return 'var(--ok)';
+  return 'var(--muted)';
+}
+
+function renderCharge(){
+  const totals = recTotals(LIVE);
+  const order = Object.entries(totals).sort((a,b)=>b[1].pts-a[1].pts);
+  const maxPts = Math.max(...order.map(o=>o[1].pts), 11);
+  let html = '';
+  order.forEach(([rec,d])=>{
+    const st = statusOf(d.pts);
+    const color = COLORS[rec] || 'var(--muted)';
+    html += `<div class="rec-card">
+      <div class="rec-top">
+        <div class="rec-name"><div class="avatar" style="background:${color};color:${TEXT_ON[rec]||'var(--prune)'}">${rec.slice(0,2).toUpperCase()}</div>${rec}</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="rec-pts">${d.pts.toString().replace('.', ',')} pts</span>
+          <span class="tag ${st.cls}">${st.label}</span>
+        </div>
+      </div>
+      <div class="charge-bar"><i style="width:${Math.min(100,(d.pts/maxPts)*100)}%;background:${color}"></i></div>
+      <div class="rec-foot"><span>${d.count} rôle${d.count>1?'s':''} en cours</span><span>Seuil sain ≤ 9,5 pts</span></div>
+    </div>`;
+  });
+  document.getElementById('charge').innerHTML = html;
+}
+
+function renderPipeline(){
+  const sorted = [...LIVE].sort((a,b)=> b.pts-a.pts);
+  document.getElementById('pipeline-body').innerHTML = sorted.map(r=>`
+    <tr>
+      <td>${r.role}</td>
+      <td><span class="pill">${r.axe}</span></td>
+      <td>${r.pts.toString().replace('.', ',')}</td>
+      <td><span class="who"><span class="dotc" style="background:${COLORS[r.rec]||'var(--muted)'}"></span>${r.rec}</span></td>
+      <td>${r.level}</td>
+      <td style="color:${confColor(r.conf)};font-weight:700">${r.conf || '—'}</td>
+    </tr>`).join('');
+}
+
+function renderAouvrir(){
+  const sorted = [...A_OUVRIR].sort((a,b)=> b.pts-a.pts);
+  document.getElementById('aouvrir-body').innerHTML = sorted.map(r=>`
+    <tr>
+      <td>${r.role}</td>
+      <td><span class="pill">${r.axe}</span></td>
+      <td>${r.pts.toString().replace('.', ',')}</td>
+      <td><span class="who"><span class="dotc" style="background:${COLORS[r.rec]||'var(--muted)'}"></span>${r.rec}</span></td>
+      <td>${r.level}</td>
+    </tr>`).join('');
+}
+
+function renderAxes(){
+  const counts = {};
+  LIVE.forEach(r=>{ counts[r.axe] = (counts[r.axe]||0)+1; });
+  const order = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const max = order[0][1];
+  const colors = ['var(--maxime)','var(--clement)','var(--etienne)','var(--manon)','var(--pierre)','var(--peche)'];
+  document.getElementById('axe-grid').innerHTML = order.map(([axe,c],i)=>`
+    <div class="axe-card">
+      <div class="lbl">${axe}</div>
+      <div class="cnt">${c}</div>
+      <div class="fill-bg"><i style="width:${Math.round((c/max)*100)}%;background:${colors[i%colors.length]}"></i></div>
+    </div>`).join('');
+}
+
+function renderAlerts(){
+  const A = [
+    {cls:'bad', t:'Maxime est à 14,5 pts (7 rôles en cours) — surcharge', d:'Nettement au-dessus du seuil sain (~9,5 pts) et du seuil de tension (11 pts). Redistribuer ou prioriser avant toute nouvelle ouverture Engineering/Product. Porte aussi 2 des 4 rôles à ouvrir (3 pts dormants).'},
+    {cls:'ok', t:'Clément, Manon, Etienne, Agence — 9,0 / 9,0 / 9,0 / 7,0 pts, sains', d:'Quatre recruteurs alignés autour ou en dessous du seuil sain. Clément porte le plus grand nombre de dossiers (8 rôles) mais des niveaux junior/mid moins lourds en points.'},
+    {cls:'ok', t:'Pierre — 6,5 pts / 3 rôles en cours', d:'Marge de capacité disponible sur le papier, mais porte aussi 2 des 4 rôles à ouvrir (CSM, AE SMB) — 2 pts dormants supplémentaires à intégrer avant de lui confier plus de charge.'},
+    {cls:'bad', t:'GHT Manager (Clément) — confiance Very low de clôture &lt;30j', d:'137 jours de retard vs cible arrivée. Le rôle le plus en difficulté du pipeline.'},
+    {cls:'warn', t:'Senior Manager Entreprise Acquisition, BU Hôpitaux Publics (Pierre) — confiance Low', d:'106 jours de retard vs cible. Rôle stratégique à sécuriser.'},
+    {cls:'warn', t:'Engineer (Fullstack - Back) (Etienne) et (Maxime) — confiance Low', d:'Deux postes identiques à confiance faible, portés par les deux recruteurs Engineering les plus chargés.'},
+    {cls:'warn', t:'4 rôles à ouvrir jamais démarrés — 5 pts dormants', d:'2 Product Manager (Maxime, 3 pts), CSM et AE SMB (Pierre, 2 pts). À prioriser avant nouvelle ouverture, en particulier côté Maxime déjà en surcharge.'},
+  ];
+  document.getElementById('alertes').innerHTML = A.map(x=>
+    `<div class="alert ${x.cls}"><div class="at">${x.t}</div><div class="ad">${x.d}</div></div>`).join('');
+}
+
+function tab(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  btn.classList.add('active');
+  animate();
+}
+function animate(){
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.charge-bar i, .axe-card .fill-bg i').forEach(el=>{
+      const w = el.style.width;
+      el.style.width = '0';
+      setTimeout(()=>{ el.style.width = w; }, 60);
+    });
+  });
+}
+
+document.getElementById('today').textContent = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'short', year:'numeric'});
+
+renderCharge();
+renderPipeline();
+renderAouvrir();
+renderAxes();
+renderAlerts();
+animate();
 </script>
-</body></html>
+</body>
+</html>
