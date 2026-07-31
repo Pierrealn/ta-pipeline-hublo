@@ -109,7 +109,7 @@
       <h1>Hiring Capacity</h1>
       <div class="sub"><span class="dot"></span>Hublo · Talent Acquisition · FY2026</div>
     </div>
-    <div class="stamp"><b id="today"></b>Source : Recruitment Plan (fichier) · 2 RPO partis, Pierre reste · 4 fermetures prévues d'ici 01/08</div>
+    <div class="stamp"><b id="today"></b>Source : Recruitment Plan (fichier) · Hiring Plan Overview, charge par recruteur</div>
   </div>
 </div>
 
@@ -117,17 +117,17 @@
 
   <div class="kpis">
     <div class="kpi"><div class="n">4</div><div class="l">Recruteurs actifs</div></div>
-    <div class="kpi"><div class="n">24</div><div class="l">Rôles en cours</div></div>
+    <div class="kpi"><div class="n">31</div><div class="l">Rôles en cours</div></div>
     <div class="kpi"><div class="n">2</div><div class="l">Rôles à ouvrir</div></div>
-    <div class="kpi"><div class="n" style="color:var(--bad)">46</div><div class="l">Points de charge (en cours)</div></div>
-    <div class="kpi"><div class="n">4</div><div class="l">Fermetures prévues d'ici 01/08 (−6 pts)</div></div>
+    <div class="kpi"><div class="n" style="color:var(--bad)">61</div><div class="l">Points de charge (en cours + à ouvrir)</div></div>
+    <div class="kpi"><div class="n">61%</div><div class="l">Plan FY2026 recruté (66/107)</div></div>
   </div>
+  <div class="legend" style="margin-top:-14px">Plan FY2026 complet (tous statuts) : 107 postes · 66 recrutés · 31 en cours · 2 à ouvrir · 3 stand by · 5 à monitorer</div>
 
   <div class="tabs">
     <button class="tab active" onclick="tab('charge',this)">Charge</button>
     <button class="tab" onclick="tab('pipeline',this)">Pipeline</button>
     <button class="tab" onclick="tab('aouvrir',this)">À ouvrir</button>
-    <button class="tab" onclick="tab('fermetures',this)">Fermetures</button>
     <button class="tab" onclick="tab('axes',this)">Axes</button>
     <button class="tab" onclick="tab('alertes',this)">Alertes</button>
   </div>
@@ -135,7 +135,7 @@
   <!-- CHARGE -->
   <div class="panel active" id="p-charge">
     <div class="sech">Charge des recrutements en cours</div>
-    <div class="legend">Seuil sain ≈ 9–9,5 pts / recruteur · Pondération : Junior 1 · Mid 1,5 · Senior 2 · Exec/Head 3<br>Vert = sain (≤9,5) · Ambre = tension (≤11) · Rouge = surcharge (&gt;11). Les 2 RPO sont sortis du fichier, leurs rôles redistribués vers Manon et Etienne — d'où leur surcharge.</div>
+    <div class="legend">Seuil sain ≈ 9–9,5 pts / recruteur · Pondération : Junior 1 · Mid 1,5 · Senior 2 · Exec/Head 3<br>Vert = sain (≤9,5) · Ambre = tension (≤11) · Rouge = surcharge (&gt;11). Maxime et Clément (2 RPO) sont sortis du fichier : plus aucun rôle actif à leur nom.</div>
     <div id="charge"></div>
   </div>
 
@@ -171,16 +171,6 @@
     </table>
   </div>
 
-  <!-- FERMETURES -->
-  <div class="panel" id="p-fermetures">
-    <div class="sech">Fermetures prévues d'ici le 01/08 — 4 rôles, −6 pts retirés du pipeline actif</div>
-    <div class="legend">Signalé par Pierre : 2 Product Manager, 1 SDR Enterprise, 1 AE SMB, 1 Senior AE. Un rôle ("Senior AE") ne correspond à aucun poste actuellement En cours ou À ouvrir dans le fichier — non appliqué ci-dessous, à clarifier.</div>
-    <table>
-      <thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur (avant fermeture)</th><th>Statut avant</th></tr></thead>
-      <tbody id="fermetures-body"></tbody>
-    </table>
-  </div>
-
   <!-- AXES -->
   <div class="panel" id="p-axes">
     <div class="sech">Rôles en cours par axe analytique</div>
@@ -193,7 +183,7 @@
     <div id="alertes"></div>
   </div>
 
-  <div class="foot">Snapshot généré depuis « Hublo FY2026 Recruitment Plan » (onglet Recruitment) · 2 RPO (Maxime, Clément) sortis, Pierre reste · 4 fermetures prévues d'ici 01/08</div>
+  <div class="foot">Snapshot généré depuis « Hublo FY2026 Recruitment Plan » (onglets Recruitment + Hiring Plan Overview) · 2 RPO (Maxime, Clément) sortis, 0 rôle actif à leur nom</div>
 </div>
 
 <script>
@@ -201,42 +191,43 @@ const COLORS = {Maxime:'var(--maxime)',Clément:'var(--clement)',Manon:'var(--ma
 const TEXT_ON = {Maxime:'var(--blanc)',Clément:'var(--prune)',Manon:'var(--prune)',Etienne:'var(--prune)',Pierre:'var(--blanc)',Agence:'var(--prune)'};
 
 const LIVE = [
-  {role:"Lead Engineer (Fullstack)", axe:"Engineering", pts:3, rec:"Etienne", level:"Senior", conf:"Medium"},
-  {role:"Chief People Officer", axe:"HR", pts:3, rec:"Agence", level:"C-level", conf:"Medium"},
-  {role:"Senior Manager Entreprise Acquisition, BU Hôpitaux Publics", axe:"Sales", pts:3, rec:"Pierre", level:"Manager", conf:"Low"},
-  {role:"Head of PMM", axe:"Product", pts:3, rec:"Agence", level:"Head of", conf:null},
-  {role:"Lead SRE", axe:"Engineering", pts:3, rec:"Etienne", level:"Manager", conf:"High"},
-  {role:"Staff Engineer", axe:"Engineering", pts:3, rec:"Manon", level:"Staff", conf:"Medium"},
-  {role:"GHT Manager", axe:"Sales", pts:2, rec:"Pierre", level:"Confirmed", conf:"Very low"},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High"},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High"},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High"},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"Low"},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Manon", level:"Senior", conf:"Low"},
-  {role:"Senior Revenue Operations", axe:"Revenue Operations", pts:2, rec:"Manon", level:"Senior", conf:"High"},
-  {role:"Team Lead Product Design", axe:"Product", pts:2, rec:"Pierre", level:"Manager", conf:"High"},
-  {role:"Manager AE SMB", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"High"},
-  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1.5, rec:"Manon", level:"Confirmed", conf:"High"},
-  {role:"Senior HR Ops", axe:"HR", pts:1.5, rec:"Pierre", level:"Senior", conf:"Medium"},
-  {role:"AE SMB", axe:"Sales", pts:1, rec:"Agence", level:"Confirmed", conf:"High"},
-  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"Medium"},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"High"},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Manon", level:"Confirmed", conf:"High"},
-  {role:"User Care Manager", axe:"User Care", pts:1, rec:"Manon", level:"Junior", conf:"High"},
-  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Manon", level:"Junior", conf:"High"},
-  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Manon", level:"Confirmed", conf:"High"},
+const LIVE = [
+  {role:"Lead Engineer (Fullstack)", axe:"Engineering", pts:3, rec:"Etienne", level:"Senior", conf:"Medium", delay:32},
+  {role:"Chief People Officer", axe:"HR", pts:3, rec:"Agence", level:"C-level", conf:"Medium", delay:-60},
+  {role:"Senior Manager Entreprise Acquisition, BU Hôpitaux Publics", axe:"Sales", pts:3, rec:"Pierre", level:"Manager", conf:"Low", delay:-121},
+  {role:"Head of PMM", axe:"Product", pts:3, rec:"Agence", level:"Head of", conf:null, delay:33},
+  {role:"Lead SRE", axe:"Engineering", pts:3, rec:"Etienne", level:"Manager", conf:"High", delay:-30},
+  {role:"Staff Engineer", axe:"Engineering", pts:3, rec:"Manon", level:"Staff", conf:"Medium", delay:32},
+  {role:"Head of Talent Acquisition", axe:"HR", pts:3, rec:"Pierre", level:"Head of", conf:"High", delay:null},
+  {role:"GHT Manager", axe:"Sales", pts:2, rec:"Pierre", level:"Confirmed", conf:"Very low", delay:-152},
+  {role:"SDR Manager", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"Medium", delay:32},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High", delay:-59},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High", delay:-60},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High", delay:-30},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"Low", delay:-30},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Manon", level:"Senior", conf:"Low", delay:-30},
+  {role:"Senior Revenue Operations", axe:"Revenue Operations", pts:2, rec:"Manon", level:"Senior", conf:"High", delay:32},
+  {role:"Team Lead Product Design", axe:"Product", pts:2, rec:"Etienne", level:"Manager", conf:"High", delay:67},
+  {role:"Manager AE SMB", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"High", delay:32},
+  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1.5, rec:"Manon", level:"Confirmed", conf:"High", delay:-30},
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Pierre", level:"Senior", conf:null, delay:null},
+  {role:"Senior HR Ops", axe:"HR", pts:1.5, rec:"Pierre", level:"Senior", conf:"Medium", delay:67},
+  {role:"Talent Acquisition Specialist", axe:"HR", pts:1.5, rec:"Pierre", level:"Senior", conf:"High", delay:null},
+  {role:"AE SMB", axe:"Sales", pts:1, rec:"Agence", level:"Confirmed", conf:"High", delay:32},
+  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"Medium", delay:-59},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"High", delay:-60},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Manon", level:"Confirmed", conf:"High", delay:-60},
+  {role:"User Care Manager", axe:"User Care", pts:1, rec:"Manon", level:"Junior", conf:"High", delay:67},
+  {role:"AE SMB", axe:"Sales", pts:1, rec:"Agence", level:"Confirmed", conf:"High", delay:32},
+  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Manon", level:"Junior", conf:"High", delay:67},
+  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Manon", level:"Confirmed", conf:"High", delay:67},
+  {role:"CSM", axe:"Customer Success", pts:1, rec:"Pierre", level:"Confirmed", conf:"High", delay:95},
+  {role:"QA Engineer", axe:"Engineering", pts:1, rec:"Etienne", level:"Junior", conf:"High", delay:null},
 ];
 
 const A_OUVRIR = [
-  {role:"CSM", axe:"Customer Success", pts:1, rec:"Pierre", level:"Confirmed"},
-  {role:"AE SMB", axe:"Sales", pts:1, rec:"Pierre", level:"Confirmed"},
-];
-
-const FERMETURES = [
-  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Pierre", statut:"À ouvrir"},
-  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Manon", statut:"À ouvrir"},
-  {role:"AE SMB", axe:"Sales", pts:1, rec:"Agence", statut:"En cours"},
-  {role:"SDR Manager (≈ SDR Enterprise)", axe:"Sales", pts:2, rec:"Manon", statut:"En cours"},
+  {role:"Senior Marketplace Manager – Demand Lead", axe:"Pool Operations", pts:2, rec:"Pierre", level:"Senior"},
+  {role:"Référent(e) Qualité & Fiabilité du Pool", axe:"Pool Operations", pts:2, rec:"Pierre", level:"Confirmed"},
 ];
 
 function recTotals(list){
@@ -343,17 +334,6 @@ function renderAouvrir(){
   document.getElementById('aouvrir-count').textContent = `${sorted.length} rôle${sorted.length>1?'s':''} · ${pts.toString().replace('.', ',')} pts`;
 }
 
-function renderFermetures(){
-  document.getElementById('fermetures-body').innerHTML = FERMETURES.map(r=>`
-    <tr>
-      <td>${r.role}</td>
-      <td><span class="pill">${r.axe}</span></td>
-      <td>${r.pts.toString().replace('.', ',')}</td>
-      <td><span class="who"><span class="dotc" style="background:${COLORS[r.rec]||'var(--muted)'}"></span>${r.rec}</span></td>
-      <td><span class="pill">${r.statut}</span></td>
-    </tr>`).join('');
-}
-
 function renderAxes(){
   const counts = {};
   LIVE.forEach(r=>{ counts[r.axe] = (counts[r.axe]||0)+1; });
@@ -370,13 +350,13 @@ function renderAxes(){
 
 function renderAlerts(){
   const A = [
-    {cls:'bad', t:'Etienne à 16 pts et Manon à 14,5 pts — surcharge', d:'Les 2 RPO sont sortis du fichier : leurs rôles ont été redistribués vers Manon et Etienne, qui dépassent chacun largement le seuil de surcharge (11 pts). C\u2019est la situation la plus critique du dashboard.'},
-    {cls:'ok', t:'Pierre — 8,5 pts / 4 rôles, sain', d:'GHT Manager, Senior Manager BU Hôpitaux Publics, Team Lead Product Design, Senior HR Ops. Charge propre stable, sous le seuil de tension. Reste également 2 rôles à ouvrir (CSM, AE SMB, 2 pts).'},
-    {cls:'ok', t:'4 fermetures prévues d\u2019ici le 01/08 — −6 pts retirés du pipeline actif', d:'2 Product Manager, 1 AE SMB (Agence), 1 SDR Manager (Manon). Allège la charge de Manon (−3,5 pts) et d\u2019Agence (−1 pt) mais ne suffit pas à ramener Manon ou Etienne sous le seuil sain.'},
-    {cls:'warn', t:'"Senior AE" signalé en fermeture mais introuvable dans le pipeline actif', d:'Aucun poste "Senior AE" n\u2019est actuellement En cours ou À ouvrir dans le fichier (seules des versions "Done" existent). Non déduit du calcul — à clarifier.'},
-    {cls:'bad', t:'GHT Manager (Pierre) — confiance Very low, 137j de retard', d:'Toujours le rôle le plus fragile du pipeline, quel que soit le recruteur qui le porte.'},
-    {cls:'ok', t:'Agence — 7,0 pts / 3 rôles, sain', d:'Mandat externe indépendant du headcount interne — marge de capacité réelle sur ce dashboard.'},
-    {cls:'bad', t:'Conclusion : la surcharge vient de la redistribution des 2 RPO, pas d\u2019un départ de Pierre', d:'46 pts au total pour 4 recruteurs, mais très inégalement répartis : Manon et Etienne portent 30,5 pts à eux deux quand Pierre et Agence n\u2019en portent que 15,5. Un rééquilibrage entre les quatre reste possible sans nouvelle embauche.'},
+    {cls:'bad', t:'Etienne à 19 pts (10 rôles) — surcharge la plus forte du dashboard', d:'Quasi 2× le seuil de surcharge (11 pts). Concentré sur l\u2019Engineering (8 des 10 rôles), dont plusieurs très en retard vs cible.'},
+    {cls:'bad', t:'Pierre à 17,5 pts (7 en cours + 2 à ouvrir) — surcharge', d:'Porte notamment son propre poste de remplacement (Head of Talent Acquisition, 3 pts, confiance High) en plus de 8 autres rôles à travers Sales, HR, Product et Customer Success.'},
+    {cls:'bad', t:'Manon à 16,5 pts (10 rôles) — surcharge', d:'Deuxième plus forte densité de rôles après Etienne, mêlant Sales, Engineering et User Care.'},
+    {cls:'ok', t:'Agence — 8,0 pts / 4 rôles, sain', d:'Seule ressource sous le seuil de tension sur ce dashboard — marge de capacité réelle si besoin de redistribuer.'},
+    {cls:'bad', t:'GHT Manager (Pierre) — confiance Very low, 152 jours de retard', d:'Le rôle le plus fragile du pipeline, et le plus en retard vs sa cible d\u2019arrivée initiale.'},
+    {cls:'warn', t:'La majorité des rôles En cours sont déjà en retard vs leur cible', d:'La plupart des délais affichés sont négatifs (de -30 à -152 jours) — seuls les rôles ouverts plus récemment (32 à 95 jours restants) sont encore dans les temps.'},
+    {cls:'bad', t:'Conclusion : les 3 recruteurs internes sont tous en surcharge, seule Agence a de la marge', d:'61 pts de charge active pour 4 recruteurs, mais Etienne/Manon/Pierre dépassent chacun individuellement le seuil de surcharge (11 pts). Un arbitrage ou un renfort est nécessaire au-delà d\u2019Agence.'},
   ];
   document.getElementById('alertes').innerHTML = A.map(x=>
     `<div class="alert ${x.cls}"><div class="at">${x.t}</div><div class="ad">${x.d}</div></div>`).join('');
@@ -405,7 +385,6 @@ populateFilters();
 renderCharge();
 renderPipeline();
 renderAouvrir();
-renderFermetures();
 renderAxes();
 renderAlerts();
 animate();
