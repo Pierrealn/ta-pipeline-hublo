@@ -95,6 +95,13 @@
   .filters select:hover{border-color:var(--prune)}
   .filters .count{font-size:11.5px;color:var(--muted);margin-left:auto}
 
+  .tth-row{display:flex;align-items:center;gap:12px;margin-bottom:9px}
+  .tth-row .tth-label{width:220px;flex-shrink:0;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tth-row .tth-track{flex:1;position:relative;height:20px;background:var(--surface);border-radius:6px;overflow:visible}
+  .tth-row .tth-fill{position:absolute;left:0;top:0;height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .tth-row .tth-fill span{font-size:11px;font-weight:700;color:var(--card)}
+  .tth-avg-line{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--prune);opacity:.4}
+
   .axe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
   .axe-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
   .axe-card .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;color:var(--muted);margin-bottom:8px}
@@ -157,6 +164,7 @@
   <div class="tabs">
     <button class="tab active" onclick="tab('parrec',this)">Par recruteur</button>
     <button class="tab" onclick="tab('pipeline',this)">Pipeline complet</button>
+    <button class="tab" onclick="tab('closings',this)">Closings</button>
     <button class="tab" onclick="tab('axes',this)">Axes</button>
     <button class="tab" onclick="tab('alertes',this)">Alertes</button>
   </div>
@@ -180,6 +188,32 @@
     <table class="flat">
       <thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur</th><th>Niveau</th><th>Confiance &lt;50j</th><th>Delay</th></tr></thead>
       <tbody id="pipeline-body"></tbody>
+    </table>
+  </div>
+
+  <!-- CLOSINGS -->
+  <div class="panel" id="p-closings">
+    <div class="sech">Postes closés — juillet 2026 · date de clôture (Hiring date)</div>
+    <div class="kpis" style="margin-bottom:22px">
+      <div class="kpi"><div class="n">8</div><div class="l">Postes closés</div></div>
+      <div class="kpi"><div class="n">53j</div><div class="l">TTH moyen</div></div>
+      <div class="kpi"><div class="n">84j</div><div class="l">TTF moyen</div></div>
+      <div class="kpi"><div class="n">16j – 144j</div><div class="l">Écart TTH (min–max)</div></div>
+    </div>
+
+    <div class="sech">TTH par poste · triés du plus rapide au plus lent · ligne pointillée = moyenne (53j)</div>
+    <div id="tth-chart" style="margin-bottom:26px"></div>
+
+    <div class="sech">Comparatif par recruteur</div>
+    <table class="flat" style="margin-bottom:26px">
+      <thead><tr><th>Recruteur</th><th>Postes closés</th><th>TTH moyen</th><th>TTF moyen</th></tr></thead>
+      <tbody id="closings-byrec"></tbody>
+    </table>
+
+    <div class="sech">Détail des 8 closings</div>
+    <table class="flat">
+      <thead><tr><th>Poste</th><th>Axe</th><th>Recruteur</th><th>Contrat</th><th>Date</th><th>TTH</th><th>TTF</th></tr></thead>
+      <tbody id="closings-body"></tbody>
     </table>
   </div>
 
@@ -235,6 +269,17 @@ const LIVE = [
   {role:"Référent(e) Qualité & Fiabilité du Pool", axe:"Pool Operations", pts:1.5, rec:"Pierre", level:"Confirmed", conf:"Medium", delay:92},
   {role:"CSM", axe:"Customer Success", pts:1, rec:"Pierre", level:"Confirmed", conf:"High", delay:92},
   {role:"Talent Acquisition Specialist", axe:"HR", pts:1, rec:"Pierre", level:"Senior", conf:"High", delay:92},
+];
+
+const CLOSINGS = [
+  {role:"Senior AE", axe:"Sales", rec:"Agence", contract:"CDI", date:"24/07", tth:92, ttf:131},
+  {role:"SDR KA Public", axe:"Sales", rec:"Clément", contract:"CDI", date:"11/07", tth:48, ttf:38},
+  {role:"Product Manager", axe:"Product", rec:"Maxime", contract:"CDI", date:"31/07", tth:60, ttf:92},
+  {role:"AE SMB", axe:"Sales", rec:"Clément", contract:"CDI", date:"28/07", tth:6, ttf:104},
+  {role:"SDR Grands Comptes", axe:"Sales", rec:"Clément", contract:"CDI", date:"18/07", tth:55, ttf:100},
+  {role:"AE Grands Comptes", axe:"Sales", rec:"Manon", contract:"CDI", date:"21/07", tth:6, ttf:83},
+  {role:"Revops Growth Manager", axe:"Revenue Operations", rec:"Manon", contract:"Freelance", date:"10/07", tth:144, ttf:105},
+  {role:"Senior HR Ops", axe:"HR", rec:"Pierre", contract:"Freelance", date:"31/07", tth:16, ttf:19},
 ];
 
 const CLOSABLE = new Set(['High','Very high']);
@@ -343,6 +388,50 @@ function renderPipeline(){
   document.getElementById('pipeline-count').textContent = `${sorted.length} rôle${sorted.length>1?'s':''} · ${pts.toString().replace('.', ',')} pts`;
 }
 
+function renderClosings(){
+  const tthAvg = CLOSINGS.reduce((s,c)=>s+c.tth,0)/CLOSINGS.length;
+  const maxTth = Math.max(...CLOSINGS.map(c=>c.tth));
+  const avgPct = (tthAvg/maxTth)*100;
+  const sorted = [...CLOSINGS].sort((a,b)=>a.tth-b.tth);
+  document.getElementById('tth-chart').innerHTML = sorted.map(c=>{
+    const pct = (c.tth/maxTth)*100;
+    const color = COLORS[c.rec] || 'var(--muted)';
+    const textColor = TEXT_ON[c.rec] || 'var(--prune)';
+    return `<div class="tth-row">
+      <div class="tth-label">${c.role}</div>
+      <div class="tth-track">
+        <div class="tth-fill" style="width:${pct}%;background:${color}"><span style="color:${textColor}">${c.tth}j</span></div>
+        <div class="tth-avg-line" style="left:${avgPct}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const byRec = {};
+  CLOSINGS.forEach(c=>{
+    if(!byRec[c.rec]) byRec[c.rec] = {n:0,tth:0,ttf:0};
+    byRec[c.rec].n++; byRec[c.rec].tth += c.tth; byRec[c.rec].ttf += c.ttf;
+  });
+  const recOrder = Object.entries(byRec).sort((a,b)=>b[1].n-a[1].n);
+  document.getElementById('closings-byrec').innerHTML = recOrder.map(([rec,d])=>`
+    <tr>
+      <td><span class="who"><span class="dotc" style="background:${COLORS[rec]||'var(--muted)'}"></span>${rec}</span></td>
+      <td>${d.n}</td>
+      <td>${Math.round(d.tth/d.n)}j</td>
+      <td>${Math.round(d.ttf/d.n)}j</td>
+    </tr>`).join('');
+
+  document.getElementById('closings-body').innerHTML = [...CLOSINGS].sort((a,b)=>a.tth-b.tth).map(c=>`
+    <tr>
+      <td>${c.role}</td>
+      <td><span class="pill">${c.axe}</span></td>
+      <td><span class="who"><span class="dotc" style="background:${COLORS[c.rec]||'var(--muted)'}"></span>${c.rec}</span></td>
+      <td><span class="pill">${c.contract}</span></td>
+      <td>${c.date}</td>
+      <td>${c.tth}j</td>
+      <td>${c.ttf}j</td>
+    </tr>`).join('');
+}
+
 function renderAxes(){
   const counts = {};
   LIVE.forEach(r=>{ counts[r.axe] = (counts[r.axe]||0)+1; });
@@ -381,7 +470,7 @@ function tab(id, btn){
 }
 function animate(){
   requestAnimationFrame(()=>{
-    document.querySelectorAll('.charge-bar i, .axe-card .fill-bg i').forEach(el=>{
+    document.querySelectorAll('.charge-bar i, .axe-card .fill-bg i, .tth-fill').forEach(el=>{
       const w = el.style.width;
       el.style.width = '0';
       setTimeout(()=>{ el.style.width = w; }, 60);
@@ -395,6 +484,7 @@ renderClose50();
 populateFilters();
 renderParRecruteur();
 renderPipeline();
+renderClosings();
 renderAxes();
 renderAlerts();
 animate();
