@@ -141,17 +141,17 @@
       <h1>Hiring Capacity</h1>
       <div class="sub"><span class="dot"></span>Hublo · Talent Acquisition · FY2026 · Snapshot fin août</div>
     </div>
-    <div class="stamp"><b id="today"></b>Source : Recruitment Plan (fichier) · VF · répartition par recruteur = En cours uniquement</div>
+    <div class="stamp"><b id="today"></b>Source : Recruitment Plan (fichier) · répartition par recruteur = En cours uniquement</div>
   </div>
 </div>
 
 <div class="wrap">
 
   <div class="kpis">
-    <div class="kpi"><div class="n">6</div><div class="l">Recruteurs actifs</div></div>
-    <div class="kpi"><div class="n">29</div><div class="l">Rôles en cours</div></div>
-    <div class="kpi"><div class="n" style="color:var(--bad)">56,5</div><div class="l">Points de charge (en cours)</div></div>
-    <div class="kpi"><div class="n">4</div><div class="l">Rôles à ouvrir (6 pts, hors charge)</div></div>
+    <div class="kpi"><div class="n">5</div><div class="l">Recruteurs actifs</div></div>
+    <div class="kpi"><div class="n">34</div><div class="l">Rôles en cours</div></div>
+    <div class="kpi" style="border:1.5px solid var(--bad)"><div class="n" style="color:var(--bad)">59,5</div><div class="l">Points de charge (en cours)</div></div>
+    <div class="kpi" style="border:1.5px solid var(--bad)"><div class="n" style="color:var(--bad)">16</div><div class="l">Rôles à ouvrir (26 pts, dont 19 pts non assignés)</div></div>
   </div>
 
   <div class="close50">
@@ -171,6 +171,8 @@
     <button class="tab active" onclick="tab('parrec',this)">Par recruteur</button>
     <button class="tab" onclick="tab('pipeline',this)">Pipeline (en cours)</button>
     <button class="tab" onclick="tab('aouvrir',this)">À ouvrir</button>
+    <button class="tab" onclick="tab('capacite',this)">Capacité</button>
+    <button class="tab" onclick="tab('comparatif',this)">Comparatif</button>
     <button class="tab" onclick="tab('closings',this)">Closings</button>
     <button class="tab" onclick="tab('axes',this)">Axes</button>
     <button class="tab" onclick="tab('alertes',this)">Alertes</button>
@@ -200,30 +202,73 @@
 
   <!-- À OUVRIR -->
   <div class="panel" id="p-aouvrir">
-    <div class="sech">Rôles à ouvrir — 4 postes, 6 pts · jamais démarrés, hors calcul de charge</div>
+    <div class="sech">Rôles à ouvrir — 16 postes, 26 pts · jamais démarrés, hors calcul de charge</div>
+    <div class="legend">12 des 16 rôles (19 pts) n'ont aucun recruteur assigné — voir l'onglet Capacité pour l'impact sur le dimensionnement de l'équipe.</div>
     <table class="flat">
       <thead><tr><th>Poste</th><th>Axe</th><th>Pts</th><th>Recruteur</th><th>Niveau</th></tr></thead>
       <tbody id="aouvrir-body"></tbody>
     </table>
   </div>
 
+  <!-- CAPACITÉ -->
+  <div class="panel" id="p-capacite">
+    <div class="sech">Points d'alerte</div>
+    <div id="capacite-alerts" style="margin-bottom:26px"></div>
+
+    <div class="sech">Capacité actuelle par recruteur (rôles en cours)</div>
+    <div class="legend">Seuil sain ≤ 9,5 pts · tension ≤ 11 pts · surcharge &gt; 11 pts</div>
+    <div id="capacite-recruteurs" style="margin-bottom:26px"></div>
+
+    <div class="sech">Points de capacité restants — charge non couverte</div>
+    <div class="kpis" style="margin-bottom:10px">
+      <div class="kpi"><div class="n">26</div><div class="l">Pts à ouvrir (16 rôles)</div></div>
+      <div class="kpi" style="border:1.5px solid var(--bad)"><div class="n" style="color:var(--bad)">19</div><div class="l">Pts non assignés (12 rôles)</div></div>
+      <div class="kpi"><div class="n">85,5</div><div class="l">Charge totale (en cours + à ouvrir)</div></div>
+      <div class="kpi"><div class="n">7</div><div class="l">Pts déjà couverts sur l'à ouvrir</div></div>
+    </div>
+    <div class="legend" style="margin-bottom:26px">12 rôles Product (Lead Product Manager x3, Product Manager x2, Senior Product Designer x4, Product Designer, IA & Product Ops, Design System Manager) n'ont pas de repreneur identifié dans le fichier.</div>
+
+    <div class="sech">Combien de recruteurs pour absorber la charge jusqu'à fin d'année ?</div>
+    <div id="capacite-reco"></div>
+  </div>
+
+  <!-- COMPARATIF -->
+  <div class="panel" id="p-comparatif">
+    <div class="sech">Ce qui a changé depuis la dernière version</div>
+    <div id="comparatif-summary" style="margin-bottom:22px"></div>
+
+    <div class="sech">Évolution de la charge par recruteur (rôles en cours)</div>
+    <table class="flat" style="margin-bottom:26px">
+      <thead><tr><th>Recruteur</th><th>Avant</th><th>Maintenant</th><th>Écart pts</th><th>Écart rôles</th></tr></thead>
+      <tbody id="comparatif-body"></tbody>
+    </table>
+
+    <div class="sech">Nouveaux closings depuis la dernière version</div>
+    <table class="flat">
+      <thead><tr><th>Poste</th><th>Recruteur</th><th>Contrat</th><th>Date</th></tr></thead>
+      <tbody id="comparatif-closings"></tbody>
+    </table>
+  </div>
+
   <!-- CLOSINGS -->
   <div class="panel" id="p-closings">
-    <div class="sech">Postes closés — juillet + août 2026 · date de clôture (Hiring date)</div>
+    <div class="sech">Postes closés — juillet + août + septembre 2026 · date de clôture (Hiring date)</div>
     <div class="kpis" style="margin-bottom:22px">
-      <div class="kpi"><div class="n">17</div><div class="l">Postes closés (juil.+août)</div></div>
-      <div class="kpi"><div class="n">54j</div><div class="l">TTH moyen</div></div>
-      <div class="kpi"><div class="n">88j</div><div class="l">TTF moyen</div></div>
-      <div class="kpi"><div class="n">13 / 2 / 2</div><div class="l">CDI / CDD / Freelance</div></div>
+      <div class="kpi"><div class="n">21</div><div class="l">Postes closés (juil.+août+sept.)</div></div>
+      <div class="kpi"><div class="n">61j</div><div class="l">TTH moyen (20 valides)</div></div>
+      <div class="kpi"><div class="n">89j</div><div class="l">TTF moyen (20 valides)</div></div>
+      <div class="kpi"><div class="n">16 / 2 / 2</div><div class="l">CDI / CDD / Freelance+N/A</div></div>
     </div>
+    <div class="legend" style="margin-bottom:22px">1 valeur exclue des moyennes : User Care Specialist (Manon, 13/08) affiche un TTH négatif (-26j) dans ce fichier — anomalie non corrigée depuis la version précédente. Voir Alertes.</div>
 
     <div class="sech">Récap par mois</div>
     <div class="byrec" style="margin-bottom:26px">
       <div class="byrec-card"><div class="l3">Juillet</div><div class="n3">8</div><div class="l3">postes closés · TTH moy. 53j · TTF moy. 84j</div></div>
-      <div class="byrec-card"><div class="l3">Août</div><div class="n3">9</div><div class="l3">postes closés · TTH moy. 55j · TTF moy. 91j</div></div>
+      <div class="byrec-card"><div class="l3">Août</div><div class="n3">9</div><div class="l3">postes closés · TTH moy. 56j* · TTF moy. 90j*</div></div>
+      <div class="byrec-card"><div class="l3">Septembre</div><div class="n3">4</div><div class="l3">postes closés · TTH moy. 84j · TTF moy. 95j</div></div>
     </div>
 
-    <div class="sech">TTH par poste · triés du plus rapide au plus lent · ligne pointillée = moyenne (54j)</div>
+    <div class="sech">TTH par poste · triés du plus rapide au plus lent · ligne pointillée = moyenne (61j)</div>
     <div id="tth-chart" style="margin-bottom:26px"></div>
 
     <div class="sech">Comparatif par recruteur</div>
@@ -232,7 +277,7 @@
       <tbody id="closings-byrec"></tbody>
     </table>
 
-    <div class="sech">Détail des 17 closings</div>
+    <div class="sech">Détail des 21 closings</div>
     <table class="flat">
       <thead><tr><th>Poste</th><th>Axe</th><th>Recruteur</th><th>Contrat</th><th>Date</th><th>Mois</th><th>TTH</th><th>TTF</th></tr></thead>
       <tbody id="closings-body"></tbody>
@@ -251,50 +296,67 @@
     <div id="alertes"></div>
   </div>
 
-  <div class="foot">Snapshot fin août 2026, généré depuis « Hublo FY2026 Recruitment Plan » (onglet Recruitment) · pas de rafraîchissement automatique</div>
+  <div class="foot">Snapshot début septembre 2026, généré depuis « Hublo FY2026 Recruitment Plan » (onglet Recruitment) · pas de rafraîchissement automatique</div>
 </div>
 
 <script>
-const COLORS = {Pierre:'var(--pierre)',Manon:'var(--manon)',Maxime:'var(--maxime)',Etienne:'var(--etienne)',Agence:'var(--agence)',Mixte:'var(--orange)'};
-const TEXT_ON = {Pierre:'var(--blanc)',Manon:'var(--prune)',Maxime:'var(--blanc)',Etienne:'var(--prune)',Agence:'var(--prune)',Mixte:'var(--prune)'};
+const COLORS = {Pierre:'var(--pierre)',Manon:'var(--manon)',Maxime:'var(--maxime)',Etienne:'var(--etienne)',Agence:'var(--agence)',Clément:'#7A9E5E','Non assigné':'var(--line)'};
+const TEXT_ON = {Pierre:'var(--blanc)',Manon:'var(--prune)',Maxime:'var(--blanc)',Etienne:'var(--prune)',Agence:'var(--prune)',Clément:'var(--blanc)','Non assigné':'var(--muted)'};
 
 const LIVE = [
-  {role:"Chief People Officer", axe:"HR", pts:3, rec:"Agence", level:"C-level", conf:"Medium", delay:-91},
-  {role:"AE SMB", axe:"Sales", pts:1, rec:"Agence", level:"Confirmed", conf:"Very high", delay:1},
-  {role:"Lead SRE", axe:"Engineering", pts:3, rec:"Etienne", level:"Manager", conf:"Medium", delay:-61},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High", delay:-90},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High", delay:-61},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"Low", delay:-61},
-  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Etienne", level:"Senior", conf:"High", delay:null},
-  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"Medium", delay:-90},
-  {role:"Staff Engineer", axe:"Engineering", pts:3, rec:"Manon", level:"Staff", conf:"Medium", delay:1},
-  {role:"SDR Manager", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"High", delay:1},
-  {role:"Senior Revenue Operations", axe:"Revenue Operations", pts:2, rec:"Manon", level:"Senior", conf:"High", delay:1},
-  {role:"Manager AE SMB", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"High", delay:1},
-  {role:"Senior Revenue Operations", axe:"Revenue Operations", pts:2, rec:"Manon", level:"Senior", conf:"High", delay:null},
-  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1.5, rec:"Manon", level:"Confirmed", conf:"Medium", delay:-61},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Manon", level:"Confirmed", conf:"Medium", delay:-91},
-  {role:"Lead Engineer (Fullstack)", axe:"Engineering", pts:3, rec:"Maxime", level:"Senior", conf:"Medium", delay:1},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Maxime", level:"Senior", conf:"Medium", delay:-91},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Maxime", level:"Senior", conf:"Low", delay:-61},
-  {role:"Lead Product Design", axe:"Product", pts:2, rec:"Maxime", level:"Manager", conf:"High", delay:36},
-  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Maxime", level:"Confirmed", conf:"High", delay:-91},
-  {role:"Lead Product Manager", axe:"Product", pts:2, rec:"Mixte", level:"Manager", conf:"Very high", delay:null},
-  {role:"Senior Manager Entreprise Acquisition, BU Hôpitaux Publics", axe:"Sales", pts:3, rec:"Pierre", level:"Manager", conf:"High", delay:36},
-  {role:"Head of Talent Acquisition", axe:"HR", pts:3, rec:"Pierre", level:"Head of", conf:"High", delay:64},
-  {role:"Head of Security", axe:"Engineering", pts:3, rec:"Pierre", level:"Head of", conf:"Medium", delay:null},
-  {role:"Senior Marketplace Manager – Demand Lead", axe:"Pool Operations", pts:2, rec:"Pierre", level:"Senior", conf:"Medium", delay:64},
-  {role:"Référent(e) Qualité & Fiabilité du Pool", axe:"Pool Operations", pts:1.5, rec:"Pierre", level:"Confirmed", conf:"Medium", delay:64},
-  {role:"CSM", axe:"Customer Success", pts:1, rec:"Pierre", level:"Confirmed", conf:"High", delay:64},
-  {role:"Talent Acquisition Specialist", axe:"HR", pts:1, rec:"Pierre", level:"Senior", conf:"High", delay:64},
-  {role:"SDR Grands Comptes", axe:"Sales", pts:1, rec:"Pierre", level:"Confirmed", conf:"High", delay:null},
+  {role:"AE SMB", axe:"Sales", pts:1, rec:"Agence", level:"Confirmed", conf:"Very high", delay:-7},
+  {role:"User Care Specialist", axe:"User Care", pts:1, rec:"Manon", level:"Junior", conf:"High", delay:28},
+  {role:"Lead SRE", axe:"Engineering", pts:3, rec:"Etienne", level:"Manager", conf:"Medium", delay:-69},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High", delay:-98},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"High", delay:-69},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Etienne", level:"Senior", conf:"Low", delay:-69},
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Etienne", level:"Senior", conf:"High", delay:28},
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Etienne", level:"Confirmed", conf:"Very high", delay:84},
+  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1, rec:"Etienne", level:"Confirmed", conf:"Medium", delay:-98},
+  {role:"Staff Engineer", axe:"Engineering", pts:3, rec:"Manon", level:"Staff", conf:"Medium", delay:-7},
+  {role:"SDR Manager", axe:"Sales", pts:2, rec:"Manon", level:"Manager", conf:"Medium", delay:-7},
+  {role:"Manager AE SMB", axe:"Sales", pts:2, rec:"Agence", level:"Manager", conf:"High", delay:-7},
+  {role:"GHT Manager", axe:"Sales", pts:1.5, rec:"Manon", level:"Senior", conf:null, delay:119},
+  {role:"Engineer (Fullstack - Front)", axe:"Engineering", pts:1.5, rec:"Manon", level:"Confirmed", conf:"Medium", delay:-69},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Manon", level:"Confirmed", conf:"Medium", delay:-99},
+  {role:"CSM Public", axe:"Customer Success", pts:1, rec:"Manon", level:"Senior", conf:"High", delay:84},
+  {role:"CSM Privé", axe:"Customer Success", pts:1, rec:"Manon", level:"Confirmed", conf:"Very high", delay:85},
+  {role:"Lead Engineer (Fullstack)", axe:"Engineering", pts:3, rec:"Maxime", level:"Senior", conf:"Medium", delay:-7},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Maxime", level:"Senior", conf:"Medium", delay:-99},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:2, rec:"Maxime", level:"Senior", conf:"Low", delay:-69},
+  {role:"Lead Product Design", axe:"Product", pts:2, rec:"Maxime", level:"Manager", conf:"High", delay:28},
+  {role:"Référent(e) Qualité & Fiabilité du Pool", axe:"Pool Operations", pts:1.5, rec:"Maxime", level:"Confirmed", conf:"Medium", delay:56},
+  {role:"Lead Engineer", axe:"Engineering", pts:1.5, rec:"Maxime", level:"Manager", conf:"High", delay:119},
+  {role:"Engineer (Fullstack - Back)", axe:"Engineering", pts:1, rec:"Maxime", level:"Confirmed", conf:"High", delay:-99},
+  {role:"Talent Acquisition Specialist", axe:"HR", pts:1, rec:"Maxime", level:"Senior", conf:"High", delay:56},
+  {role:"Sales Admin Assistant", axe:"Finance & Legal", pts:1, rec:"Maxime", level:"Junior", conf:"High", delay:84},
+  {role:"Alternant FP&A", axe:"Finance & Legal", pts:1, rec:"Maxime", level:"Intern", conf:"Very high", delay:84},
+  {role:"Senior Manager Entreprise Acquisition, BU Hôpitaux Publics", axe:"Sales", pts:3, rec:"Pierre", level:"Manager", conf:"High", delay:28},
+  {role:"Head of Talent Acquisition", axe:"HR", pts:3, rec:"Pierre", level:"Head of", conf:"High", delay:56},
+  {role:"Head of Security", axe:"Engineering", pts:3, rec:"Pierre", level:"Head of", conf:"Medium", delay:56},
+  {role:"Senior Marketplace Manager – Demand Lead", axe:"Pool Operations", pts:2, rec:"Pierre", level:"Senior", conf:"Medium", delay:56},
+  {role:"Lead Product Manager", axe:"Product", pts:2, rec:"Pierre", level:"Manager", conf:"Very high", delay:56},
+  {role:"Senior Product Manager", axe:"Product", pts:1.5, rec:"Pierre", level:"Senior", conf:"Very high", delay:-69},
+  {role:"CSM SMB", axe:"Customer Success", pts:1, rec:"Pierre", level:"Confirmed", conf:"High", delay:56},
 ];
 
 const A_OUVRIR = [
-  {role:"CSM Public", axe:"Customer Success", pts:1, rec:"Manon", level:"Confirmed"},
-  {role:"Lead Product Manager", axe:"Product", pts:2, rec:"Pierre", level:"Manager"},
-  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Manon", level:"Confirmed"},
+  {role:"Product Marketing", axe:"Product", pts:1.5, rec:"Pierre", level:"Manager"},
+  {role:"Lead Product Manager", axe:"Product", pts:2, rec:"Non assigné", level:"Manager"},
   {role:"Product Designer", axe:"Product", pts:1.5, rec:"Etienne", level:"Confirmed"},
+  {role:"Teamlead Customer Success - Planning", axe:"Customer Success", pts:2, rec:"Pierre", level:"Manager"},
+  {role:"GTM Manager Recruitment", axe:"Marketing", pts:2, rec:"Maxime", level:"Senior"},
+  {role:"Design System Manager", axe:"Product", pts:2, rec:"Non assigné", level:"Manager"},
+  {role:"Lead Product Manager", axe:"Product", pts:2, rec:"Non assigné", level:"Manager"},
+  {role:"Lead Product Manager", axe:"Product", pts:2, rec:"Non assigné", level:"Manager"},
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Non assigné", level:"Non défini"},
+  {role:"Product Manager", axe:"Product", pts:1.5, rec:"Non assigné", level:"Non défini"},
+  {role:"Senior Product Designer", axe:"Product", pts:1.5, rec:"Non assigné", level:"Non défini"},
+  {role:"Senior Product Designer", axe:"Product", pts:1.5, rec:"Non assigné", level:"Non défini"},
+  {role:"Senior Product Designer", axe:"Product", pts:1.5, rec:"Non assigné", level:"Non défini"},
+  {role:"Senior Product Designer", axe:"Product", pts:1.5, rec:"Non assigné", level:"Non défini"},
+  {role:"Product Designer", axe:"Product", pts:1, rec:"Non assigné", level:"Non défini"},
+  {role:"IA & Product Ops", axe:"Product", pts:1, rec:"Non assigné", level:"Non défini"},
 ];
 
 const CLOSINGS = [
@@ -310,12 +372,22 @@ const CLOSINGS = [
   {role:"Head of PMM", axe:"Product", rec:"Agence", contract:"CDI", date:"10/08", mois:"Août", tth:73, ttf:96, valid:true},
   {role:"SDR SMB", axe:"Sales", rec:"Pierre", contract:"CDI", date:"10/08", mois:"Août", tth:14, ttf:71, valid:true},
   {role:"GHT Manager", axe:"Sales", rec:"Clément", contract:"CDI", date:"13/08", mois:"Août", tth:52, ttf:42, valid:true},
-  {role:"User Care Specialist", axe:"User Care", rec:"Clément", contract:"CDI", date:"13/08", mois:"Août", tth:43, ttf:97, valid:true},
+  {role:"User Care Specialist", axe:"User Care", rec:"Manon", contract:"CDI", date:"13/08", mois:"Août", tth:-26, ttf:28, valid:false},
   {role:"User Care Specialist", axe:"User Care", rec:"Clément", contract:"CDD", date:"14/08", mois:"Août", tth:44, ttf:97, valid:true},
   {role:"User Care Specialist", axe:"User Care", rec:"Manon", contract:"CDD", date:"25/08", mois:"Août", tth:55, ttf:97, valid:true},
   {role:"QA Engineer", axe:"Engineering", rec:"Etienne", contract:"CDI", date:"25/08", mois:"Août", tth:75, ttf:117, valid:true},
   {role:"AE SMB", axe:"Sales", rec:"Agence", contract:"CDI", date:"27/08", mois:"Août", tth:101, ttf:106, valid:true},
+  {role:"Chief People Officer", axe:"HR", rec:"Agence", contract:"N/A", date:"01/09", mois:"Septembre", tth:190, ttf:98, valid:true},
+  {role:"SDR Grands Comptes", axe:"Sales", rec:"Pierre", contract:"CDI", date:"04/09", mois:"Septembre", tth:32, ttf:92, valid:true},
+  {role:"Senior Revenue Operations", axe:"Revenue Operations", rec:"Manon", contract:"CDI", date:"07/09", mois:"Septembre", tth:104, ttf:98, valid:true},
+  {role:"Senior Revenue Operations", axe:"Revenue Operations", rec:"Manon", contract:"CDI", date:"08/09", mois:"Septembre", tth:8, ttf:92, valid:true},
 ];
+
+const PREV_RECRUITERS = {
+  Maxime:{pts:16,count:10}, Pierre:{pts:15.5,count:7}, Etienne:{pts:13,count:7},
+  Manon:{pts:13,count:8}, Agence:{pts:1,count:1}, Clément:{pts:1,count:1},
+};
+const NEW_CLOSINGS_SINCE_LAST = [];
 
 const CLOSABLE = new Set(['High','Very high']);
 function isClosable(conf){ return CLOSABLE.has(conf); }
@@ -496,18 +568,104 @@ function renderAxes(){
     </div>`).join('');
 }
 
+function renderCapacite(){
+  const alerts = [
+    {cls:'bad', t:'19 pts (12 rôles) de l\u2019à ouvrir n\u2019ont aucun recruteur assigné', d:'Presque exclusivement des rôles Product (Lead Product Manager x3, Product Manager x2, Senior Product Designer x4, Product Designer, IA & Product Ops, Design System Manager). Personne n\u2019en est responsable à date — inchangé depuis la dernière version.'},
+    {cls:'bad', t:'Maxime — 16 pts / 10 rôles, toujours en tête de charge', d:'Inchangé depuis la dernière version, toujours en forte surcharge.'},
+    {cls:'bad', t:'Etienne, Manon et Pierre tous en surcharge également', d:'13, 12 et 15,5 pts respectivement — les 4 recruteurs internes substantiels dépassent le seuil de surcharge (11 pts) sur leur seule charge en cours, avant même d\u2019intégrer l\u2019à ouvrir.'},
+    {cls:'warn', t:'Clément a quitté le pipeline, Agence reste la seule vraie marge — 3 pts / 2 rôles', d:'Très limité en valeur absolue face aux 19 pts non assignés.'},
+  ];
+  document.getElementById('capacite-alerts').innerHTML = alerts.map(x=>
+    `<div class="alert ${x.cls}"><div class="at">${x.t}</div><div class="ad">${x.d}</div></div>`).join('');
+
+  const totals = recTotals(LIVE);
+  const order = Object.entries(totals).sort((a,b)=>b[1].pts-a[1].pts);
+  const maxPts = Math.max(...order.map(o=>o[1].pts), 11);
+  document.getElementById('capacite-recruteurs').innerHTML = order.map(([rec,d])=>{
+    const st = statusOf(d.pts);
+    const color = COLORS[rec] || 'var(--muted)';
+    return `<div class="rec-card" style="padding:14px 18px;margin-bottom:8px">
+      <div class="rec-top" style="margin-bottom:6px">
+        <div class="rec-name" style="font-size:14px"><div class="avatar" style="width:26px;height:26px;background:${color};color:${TEXT_ON[rec]||'var(--prune)'}">${rec.slice(0,2).toUpperCase()}</div>${rec}</div>
+        <div style="display:flex;align-items:center;gap:10px"><span class="rec-pts">${d.pts.toString().replace('.', ',')} pts</span><span class="tag ${st.cls}">${st.label}</span></div>
+      </div>
+      <div class="charge-bar" style="margin-bottom:0"><i style="width:${Math.min(100,(d.pts/maxPts)*100)}%;background:${color}"></i></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('capacite-reco').innerHTML = `
+    <div class="alert warn">
+      <div class="at">Estimation : 2 à 3 recruteurs supplémentaires pour absorber la charge sans surcharge d'ici fin d'année</div>
+      <div class="ad">
+        Charge totale (en cours + à ouvrir) : 85,5 pts. À un rythme sain (~9,5 pts/recruteur), il faudrait l'équivalent de 9 recruteurs pleinement dédiés ; au seuil de surcharge (11 pts, non tenable durablement), il en faudrait encore environ 8.
+        L'équipe actuelle compte 4 recruteurs substantiels (Pierre, Maxime, Manon, Etienne) déjà tous en surcharge, plus Agence à capacité encore limitée (3 pts) depuis le départ de Clément du pipeline actif — soit l'équivalent de 4 à 4,5 recruteurs pleinement engagés.
+        <br><br>
+        <b>Priorité immédiate</b>, indépendamment du calcul global : les 19 pts (12 rôles Product) sans recruteur assigné ont besoin d'un repreneur avant tout calcul de renfort — sans quoi ils resteront gelés quel que soit l'effectif total.
+      </div>
+    </div>`;
+}
+
+function renderComparatif(){
+  const totals = recTotals(LIVE);
+  const allRecs = new Set([...Object.keys(totals), ...Object.keys(PREV_RECRUITERS)]);
+  let rows = '';
+  let deltaPts = 0, deltaRoles = 0;
+  [...allRecs].sort((a,b)=>(totals[b]?.pts||0)-(totals[a]?.pts||0)).forEach(rec=>{
+    const before = PREV_RECRUITERS[rec] || {pts:0,count:0};
+    const now = totals[rec] || {pts:0,count:0};
+    const dp = now.pts - before.pts;
+    const dr = now.count - before.count;
+    deltaPts += dp; deltaRoles += dr;
+    const dpStr = dp===0?'=':(dp>0?`+${dp.toString().replace('.', ',')}`:dp.toString().replace('.', ','));
+    const drStr = dr===0?'=':(dr>0?`+${dr}`:dr);
+    rows += `<tr>
+      <td><span class="who"><span class="dotc" style="background:${COLORS[rec]||'var(--muted)'}"></span>${rec}</span></td>
+      <td>${before.pts.toString().replace('.', ',')} pts / ${before.count} rôles</td>
+      <td>${now.pts.toString().replace('.', ',')} pts / ${now.count} rôles</td>
+      <td style="color:${dp>0?'var(--bad)':(dp<0?'var(--ok)':'var(--muted)')};font-weight:700">${dpStr}</td>
+      <td style="color:${dr>0?'var(--bad)':(dr<0?'var(--ok)':'var(--muted)')};font-weight:700">${drStr}</td>
+    </tr>`;
+  });
+  document.getElementById('comparatif-body').innerHTML = rows;
+
+  document.getElementById('comparatif-summary').innerHTML = `
+    <div class="alert ok">
+      <div class="at">Charge en cours stable : 59,5 pts / 34 rôles, inchangée en volume</div>
+      <div class="ad">Deux rôles ont changé de mains : "Manager AE SMB" (2 pts) passe de Manon à Agence, "User Care Specialist" (1 pt) passe de Clément à Manon. Net : Agence +2 pts, Manon -1 pt.</div>
+    </div>
+    <div class="alert warn">
+      <div class="at">Clément quitte le pipeline actif — son seul rôle repris par Manon</div>
+      <div class="ad">Plus aucun rôle en cours à son nom dans ce fichier.</div>
+    </div>
+    <div class="alert ok">
+      <div class="at">À ouvrir inchangé : toujours 16 rôles, 26 pts, 12 rôles non assignés</div>
+      <div class="ad">Aucun mouvement sur les rôles Product en attente d'un repreneur — le point d'attention de l'onglet Capacité reste entier.</div>
+    </div>
+    <div class="alert ok">
+      <div class="at">Aucun nouveau closing depuis la dernière version</div>
+      <div class="ad">Toujours 21 postes closés sur juillet+août+septembre.</div>
+    </div>`;
+
+  document.getElementById('comparatif-closings').innerHTML = NEW_CLOSINGS_SINCE_LAST.length
+    ? CLOSINGS.filter(c => NEW_CLOSINGS_SINCE_LAST.includes(c.role) && c.mois === "Septembre").map(c=>`<tr>
+      <td>${c.role}</td>
+      <td><span class="who"><span class="dotc" style="background:${COLORS[c.rec]||'var(--muted)'}"></span>${c.rec}</span></td>
+      <td><span class="pill">${c.contract}</span></td>
+      <td>${c.date}</td>
+    </tr>`).join('')
+    : `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">Aucun nouveau closing depuis la dernière version</td></tr>`;
+}
+
 function renderAlerts(){
   const A = [
-    {cls:'bad', t:'Pierre — 15,5 pts / 8 rôles, surcharge', d:'Toujours le plus chargé, sur 6 axes différents. Porte "Head of Security" (axe non renseigné, complété en Engineering) et "SDR Grands Comptes", ajouté récemment sans axe ni score de confiance.'},
-    {cls:'bad', t:'Manon — 13,5 pts / 7 rôles, surcharge', d:'Contient toujours une ligne "Senior Revenue Operations" en double exacte (même intitulé, même recruteur, même pondération) — non résolu depuis la dernière version, à vérifier à la source.'},
-    {cls:'bad', t:'Etienne — 11,5 pts / 6 rôles, surcharge', d:'Juste au-dessus du seuil (11 pts). Le rôle "Product Designer" est passé en "À ouvrir" et ne compte plus dans sa charge.'},
-    {cls:'warn', t:'Maxime — 10 pts / 5 rôles, tension', d:'Repassé sous le seuil de surcharge depuis la dernière version — "CSM Public" est sorti de sa charge (transféré à Manon, en "À ouvrir").'},
-    {cls:'ok', t:'Agence — 4 pts / 2 rôles, sain', d:'Charge la plus légère de l\u2019équipe.'},
-    {cls:'ok', t:'Mixte (interne / agence) — 2 pts / 1 rôle, sain', d:'Lead Product Manager, seul rôle porté à deux mains interne+agence.'},
-    {cls:'warn', t:'4 rôles à ouvrir (6 pts) désormais séparés de la charge par recruteur', d:'CSM Public (Manon), Lead Product Manager (Pierre), Product Manager (Manon), Product Designer (Etienne) — aucun n\u2019a encore de score de confiance &lt;50j, cohérent avec des postes non démarrés.'},
-    {cls:'ok', t:'QA Engineer et GHT Manager — anomalies TTH/TTF corrigées dans ce fichier', d:'QA Engineer passe de -42j/-117j à 75j/117j, et GHT Manager de 247j à 52j de TTH. Les deux closings sont maintenant inclus normalement dans les moyennes.'},
-    {cls:'ok', t:'3 closings supplémentaires en août : User Care Specialist (06/08), Head of PMM (10/08), SDR SMB (10/08)', d:'Portent le total août à 9 postes closés (contre 6 précédemment), tous CDI. Le rythme de closing s\u2019accélère en fin de mois.'},
-    {cls:'ok', t:'17 postes closés sur juillet+août, dont 13 CDI', d:'Le rythme de closing reste soutenu malgré la surcharge sur Pierre, Manon et Etienne — à surveiller en septembre.'},
+    {cls:'bad', t:'Maxime — 16 pts / 10 rôles, forte surcharge', d:'Toujours le plus chargé de l\u2019équipe, inchangé depuis la dernière version.'},
+    {cls:'bad', t:'Pierre — 15,5 pts / 7 rôles, surcharge', d:'Inchangé depuis la dernière version.'},
+    {cls:'bad', t:'Etienne — 13 pts / 7 rôles, surcharge', d:'Inchangé depuis la dernière version.'},
+    {cls:'bad', t:'Manon — 12 pts / 8 rôles, surcharge', d:'Cède "Manager AE SMB" (2 pts) à Agence mais récupère "User Care Specialist" (1 pt) de Clément — léger allègement net (-1 pt), toujours en surcharge.'},
+    {cls:'warn', t:'Clément disparaît entièrement du pipeline actif', d:'Son unique rôle en cours ("User Care Specialist") est repris par Manon. Aucun rôle ne lui est plus assigné dans ce fichier.'},
+    {cls:'ok', t:'Agence — 3 pts / 2 rôles, sain', d:'Récupère "Manager AE SMB" (2 pts, ex-Manon) — sa charge triple mais reste sous le seuil sain.'},
+    {cls:'bad', t:'User Care Specialist (Manon, 13/08) — TTH négatif (-26j) toujours présent', d:'Ce rôle est passé de Clément à Manon dans ce fichier (départ de Clément), mais l\u2019anomalie TTH n\u2019a pas été corrigée. Exclue des moyennes.'},
+    {cls:'ok', t:'21 postes closés sur juillet+août+septembre, dont 16 CDI', d:'Aucun nouveau closing depuis la dernière version — rythme stable.'},
   ];
   document.getElementById('alertes').innerHTML = A.map(x=>
     `<div class="alert ${x.cls}"><div class="at">${x.t}</div><div class="ad">${x.d}</div></div>`).join('');
@@ -533,6 +691,8 @@ function animate(){
 document.getElementById('today').textContent = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'short', year:'numeric'});
 
 renderClose50();
+renderCapacite();
+renderComparatif();
 populateFilters();
 renderParRecruteur();
 renderPipeline();
